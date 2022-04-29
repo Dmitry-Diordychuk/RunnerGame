@@ -9,9 +9,10 @@ using namespace ft;
 class Lesson2 : public Engine
 {
 private:
-    //double rotationSpeed = 1;
+    double rotationSpeed = 1;
+
     std::shared_ptr<GameObject> cube = scene->addGameObject(
-        std::make_shared<GameObject>(GameObject("cube", Primitives::cube()))
+        std::make_shared<GameObject>(GameObject("triangle", Primitives::triangle()))
     );
 
 public:

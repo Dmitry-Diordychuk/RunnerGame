@@ -9,7 +9,8 @@
 
 #include <string>
 
-#include "MeshRenderer.hpp"
+//#include "MeshRenderer.hpp"
+#include "Mesh.hpp"
 
 namespace ft {
     class GameObject {
@@ -22,17 +23,18 @@ namespace ft {
         glm::vec3 _position = glm::vec3(0.f, 0.f, 0.f);
         glm::vec3 _angle = glm::vec3(0.f, 0.f, 0.f);
 
-        std::shared_ptr<MeshRenderer> _meshRenderer = std::make_shared<MeshRenderer>();
+        //std::shared_ptr<MeshRenderer> _meshRenderer = std::make_shared<MeshRenderer>();
+        Mesh _mesh;
 
     public:
         explicit GameObject(const std::string name) : _name(name) {}
-        GameObject(const std::string name, const Mesh mesh);
+        GameObject(const std::string name, const Mesh mesh) : _name(name), _mesh(mesh) {}
 
         std::string name() { return _name; }
 
         Mesh getMesh() { return _mesh; }
 
-        std::shared_ptr<MeshRenderer> meshRenderer();
+        //std::shared_ptr<MeshRenderer> meshRenderer();
     };
 }
 

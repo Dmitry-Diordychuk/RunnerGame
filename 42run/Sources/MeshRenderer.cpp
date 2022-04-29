@@ -38,9 +38,9 @@ namespace ft {
 //        glDeleteBuffers(1, & mElementBuffer);
 //    }
 
-    void MeshRenderer::draw(GLuint)
+    void MeshRenderer::drawMesh(GLuint)
     {
-        //unsigned int unit = 0, diffuse = 0, specular = 0;
+//        unsigned int unit = 0, diffuse = 0, specular = 0;
 //        for (auto &i : _mesh.texture)
 //        {   // Set Correct Uniform Names Using Texture Type (Omit ID for 0th Texture)
 //            std::string uniform = i.second;
@@ -52,8 +52,8 @@ namespace ft {
 //            glBindTexture(GL_TEXTURE_2D, i.first);
 //            glUniform1f(glGetUniformLocation(shader, uniform.c_str()), ++unit);
 //        }
-        //glBindVertexArray(mVertexArray);
-        //glDrawElements(GL_TRIANGLES, _mesh.indices.size(), GL_UNSIGNED_INT, 0);
+//        glBindVertexArray(mVertexArray);
+//        glDrawElements(GL_TRIANGLES, _mesh.indices.size(), GL_UNSIGNED_INT, 0
     }
 
 }

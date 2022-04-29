@@ -16,6 +16,8 @@
 #include <iostream>
 
 #include "Consts.hpp"
+#include "Mesh.hpp"
+#include "Shader.hpp"
 
 namespace ft {
     class Screen {
@@ -31,6 +33,10 @@ namespace ft {
                 const std::string &title = Consts::DEFAULT_PROJECT_NAME,
                 bool isFullScreen = false
         );
+
+        void drawMesh(Mesh mesh);
+
+        void prepareGLToDraw();
 
         void display();
 

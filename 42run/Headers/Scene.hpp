@@ -2,12 +2,13 @@
 // Created by Diordychuk Dmitry on 27.04.2022.
 //
 
-#ifndef GLITTER_SCENE_HPP
-#define GLITTER_SCENE_HPP
+#ifndef SCENE_HPP
+#define SCENE_HPP
 
 #include <map>
 
 #include "GameObject.hpp"
+#include <iostream>
 
 namespace ft
 {
@@ -20,7 +21,10 @@ namespace ft
         Scene() = default;
 
         std::shared_ptr<GameObject> addGameObject(std::shared_ptr<GameObject> object);
+
+        std::map<std::string, std::shared_ptr<GameObject>>::iterator begin() { return _objects.begin(); }
+        std::map<std::string, std::shared_ptr<GameObject>>::iterator end() { return _objects.end(); }
     };
 }
 
-#endif //GLITTER_SCENE_HPP
+#endif //SCENE_HPP

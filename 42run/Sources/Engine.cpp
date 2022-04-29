@@ -4,7 +4,9 @@
 
 #include "Engine.hpp"
 
-ft::Engine::Engine() {}
+ft::Engine::Engine() {
+    std::cout << "Engine started" << std::endl;
+}
 
 void ft::Engine::create(int screenWidth, int screenHeight, const std::string &name) {
     _name = name;
@@ -24,6 +26,11 @@ void ft::Engine::create(int screenWidth, int screenHeight, const std::string &na
     while (screen->isOpen())
     {
         update();
+
+        // screen->prepareGLToDraw();
+        for (auto &it : *scene) {
+            screen->drawMesh(it.second->getMesh());
+        }
 
         screen->clear();
 
