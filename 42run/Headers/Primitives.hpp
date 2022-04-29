@@ -12,6 +12,21 @@ namespace ft
     class Primitives
     {
     public:
+        static Mesh triangle() {
+            static const Mesh triangle = {
+                    {
+                    Vertex{glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0.f, 0.f, 0.f), glm::vec2(0.f, 0.f)}, // 0
+                    Vertex{glm::vec3(0.5f, -0.5f, 0.0f), glm::vec3(0.f, 0.f, 0.f), glm::vec2(0.f, 0.f)}, // 1
+                    Vertex{glm::vec3(0.0f, 0.5f, 0.0f), glm::vec3(0.f, 0.f, 0.f), glm::vec2(0.f, 0.f)}, // 2
+                    },
+                    {
+                            0, 1, 2
+                    },
+                    {}
+            };
+            return triangle;
+        };
+
         static Mesh cube() {
             static const Mesh cube = {
                     {

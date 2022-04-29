@@ -10,6 +10,15 @@ void ft::Engine::create(int screenWidth, int screenHeight, const std::string &na
     _name = name;
 
     screen->open(screenWidth, screenHeight, name);
+
+    shader->init();
+    shader->attach("basic.vert");
+    shader->attach("basic.frag");
+    //shader->attach("basic.geom");
+    shader->link();
+    shader->activate();
+    std::cout << "Shader activated" << std::endl;
+
     start();
 
     while (screen->isOpen())

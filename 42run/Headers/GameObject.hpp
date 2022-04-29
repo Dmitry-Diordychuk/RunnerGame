@@ -30,6 +30,8 @@ namespace ft {
 
         std::string name() { return _name; }
 
+        Mesh getMesh() { return _mesh; }
+
         std::shared_ptr<MeshRenderer> meshRenderer();
     };
 }

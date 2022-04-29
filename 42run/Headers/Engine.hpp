@@ -9,6 +9,7 @@
 #include "GameObject.hpp"
 #include "Scene.hpp"
 #include "Primitives.hpp"
+#include "Shader.hpp"
 
 namespace ft {
     class Engine {
@@ -18,14 +19,11 @@ namespace ft {
     protected:
         const std::shared_ptr<Screen> screen = std::make_shared<Screen>();
         const std::shared_ptr<Scene> scene = std::make_shared<Scene>();
+        const std::shared_ptr<Shader> shader = std::make_shared<Shader>();
 
-        virtual void start() {
+        virtual void start() {}
 
-        }
-
-        virtual void update() {
-
-        }
+        virtual void update() {}
 
     public:
         Engine();
