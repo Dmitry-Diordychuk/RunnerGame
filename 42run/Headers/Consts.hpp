@@ -10,9 +10,9 @@
 namespace ft {
     namespace Consts
     {
-        const int DEFAULT_SCREEN_WIDTH = 800;
-        const int DEFAULT_SCREEN_HEIGHT = 600;
-        const std::string DEFAULT_PROJECT_NAME = "THE GAME";
+        const int DEFAULT_WINDOW_WIDTH = 800;
+        const int DEFAULT_WINDOW_HEIGHT = 600;
+        const std::string DEFAULT_WINDOW_TITLE = "Game Engine";
     }
 }
 

@@ -9,30 +9,40 @@
 #include <utility>
 
 #include "Mesh.hpp"
+#include "Shader.hpp"
+
+#include <memory>
 
 namespace ft {
     class MeshRenderer {
     private:
-        ft::Mesh _mesh;
+        std::shared_ptr<Mesh> _mesh;
+        std::shared_ptr<Shader> _shader;
 
         // Private Member Variables
-        GLuint _vertexArray;
-        //GLuint mVertexBuffer{};
-        //GLuint mElementBuffer{};
+        GLuint _VAO;
+        GLuint _VBO;
+        GLuint _EBO;
 
+        bool _isInit = false;
 
     public:
         // Implement Default Constructor and Destructor
-        MeshRenderer() { std::cout << "VAO" << std::endl; glGenVertexArrays(1, & _vertexArray); }
-        ~MeshRenderer() { glDeleteVertexArrays(1, & _vertexArray); }
+        MeshRenderer() = default;
+        ~MeshRenderer() { if (_isInit) glDeleteVertexArrays(1, & _VAO); }
 
         // Implement Custom Constructors
         // explicit MeshRenderer(const ft::Mesh &mesh);
 
         // Public Member Functions
-        void drawMesh(GLuint);
+        void init();
 
-        void setMesh(Mesh mesh) { _mesh = std::move(mesh); }
+        void setMesh(const std::shared_ptr<Mesh>& mesh) { _mesh = mesh; }
+        void setShader(const std::shared_ptr<Shader>& shader) { _shader = shader; }
+
+        //void loadShaders(const std::string& shaderVert, const std::string& shaderFrag, const std::string& shaderGeom);
+
+        void drawMesh(GLfloat *view, GLfloat *model);
 
         // Disable Copying and Assignment
         MeshRenderer(MeshRenderer const &) = delete;

@@ -43,7 +43,7 @@ namespace ft {
 //        std::vector<GLuint> indices;
 //        std::vector<Texture> textures;
 //
-//        // Create Vertex Data from Mesh Node
+//        // create Vertex Data from Mesh Node
 //        Vertex vertex;
 //        for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
 //            if (mesh->mTextureCoords[0])
@@ -53,7 +53,7 @@ namespace ft {
 //            vertices.push_back(vertex);
 //        }
 //
-//        // Create Mesh Indices for Indexed Drawing
+//        // create Mesh Indices for Indexed Drawing
 //        for (unsigned int i = 0; i < mesh->mNumFaces; i++)
 //            for (unsigned int j = 0; j < mesh->mFaces[i].mNumIndices; j++)
 //                indices.push_back(mesh->mFaces[i].mIndices[j]);

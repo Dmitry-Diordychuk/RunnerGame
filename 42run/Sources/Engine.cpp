@@ -4,37 +4,28 @@
 
 #include "Engine.hpp"
 
-ft::Engine::Engine() {
-    std::cout << "Engine started" << std::endl;
-}
-
-void ft::Engine::create(int screenWidth, int screenHeight, const std::string &name) {
-    _name = name;
-
-    screen->open(screenWidth, screenHeight, name);
-
-    shader->init();
-    shader->attach("basic.vert");
-    shader->attach("basic.frag");
-    //shader->attach("basic.geom");
-    shader->link();
-    shader->activate();
-    std::cout << "Shader activated" << std::endl;
-
-    start();
-
-    while (screen->isOpen())
-    {
-        update();
-
-        // screen->prepareGLToDraw();
-        for (auto &it : *scene) {
-            screen->drawMesh(it.second->getMesh());
-        }
-
-        screen->clear();
-
-        screen->display();
+namespace ft {
+    Engine::Engine(const std::string &name, int screenWidth, int screenHeight) {
+        window->open(WindowProps(name, screenWidth, screenHeight));
+        camera->init(screenWidth, screenHeight);
+        renderer->setClearColor(glm::vec4(0.1f, 0.2f, 0.3f, 1.0f));
+        std::cout << "Engine started" << std::endl;
     }
-    screen->close();
+
+    void ft::Engine::loop() {
+        start();
+
+        while (window->isOpen()) {
+            renderer->clear();
+
+            update();
+
+            for (auto &it : *scene) {
+                renderer->draw(it.second, camera);
+            }
+
+            window->update();
+        }
+        window->close();
+    }
 }

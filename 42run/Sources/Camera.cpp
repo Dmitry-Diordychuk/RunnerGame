@@ -3,3 +3,9 @@
 //
 
 #include "Camera.hpp"
+
+namespace ft {
+    void Camera::init(int width, int height) {
+        //glViewport(0, 0, width, height);
+    }
+}

@@ -10,6 +10,9 @@
 #include "GameObject.hpp"
 #include <iostream>
 
+#include <memory>
+
+
 namespace ft
 {
     class Scene

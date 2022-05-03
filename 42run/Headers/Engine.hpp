@@ -2,14 +2,21 @@
 // Created by Diordychuk Dmitry on 26.04.2022.
 //
 
-#ifndef GLITTER_ENGINE_HPP
-#define GLITTER_ENGINE_HPP
+#ifndef ENGINE_HPP
+#define ENGINE_HPP
 
-#include "Screen.hpp"
+#include "Window.hpp"
+#include "Renderer.hpp"
 #include "GameObject.hpp"
 #include "Scene.hpp"
 #include "Primitives.hpp"
 #include "Shader.hpp"
+#include "Camera.hpp"
+
+#include "Buffer.hpp"
+#include "VertexArray.hpp"
+
+#include <memory>
 
 namespace ft {
     class Engine {
@@ -17,23 +24,26 @@ namespace ft {
         std::string _name;
 
     protected:
-        const std::shared_ptr<Screen> screen = std::make_shared<Screen>();
+        std::unique_ptr<Window> window = std::make_unique<Window>();
+        std::unique_ptr<Renderer> renderer = std::unique_ptr<Renderer>();
+
         const std::shared_ptr<Scene> scene = std::make_shared<Scene>();
-        const std::shared_ptr<Shader> shader = std::make_shared<Shader>();
+        const std::shared_ptr<Camera> camera = std::make_shared<Camera>();
 
         virtual void start() {}
 
         virtual void update() {}
 
+        Engine() = default;
+
     public:
-        Engine();
+        explicit Engine(const std::string & name,
+               int screenWidth = Consts::DEFAULT_WINDOW_WIDTH,
+               int screenHeight = Consts::DEFAULT_WINDOW_HEIGHT);
         virtual ~Engine() = default;
 
-        void create(int screenWidth = Consts::DEFAULT_SCREEN_WIDTH,
-                int screenHeight = Consts::DEFAULT_SCREEN_HEIGHT,
-                const std::string &name = Consts::DEFAULT_PROJECT_NAME);
-
+        void loop();
     };
 }
 
-#endif //GLITTER_ENGINE_HPP
+#endif //ENGINE_HPP

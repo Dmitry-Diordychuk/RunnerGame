@@ -2,40 +2,35 @@
 // Created by Diordychuk Dmitry on 27.04.2022.
 //
 
-#ifndef GLITTER_GAMEOBJECT_HPP
-#define GLITTER_GAMEOBJECT_HPP
-
-#include <glm/glm.hpp>
+#ifndef GAMEOBJECT_HPP
+#define GAMEOBJECT_HPP
 
 #include <string>
 
-//#include "MeshRenderer.hpp"
-#include "Mesh.hpp"
+#include "Transform.hpp"
+#include "MeshRenderer.hpp"
+
+#include <memory>
 
 namespace ft {
     class GameObject {
     private:
-        static const int _counter = 0;
-
         const std::string _name = "GameObject";
 
-        glm::mat4 _transformMatrix = glm::mat4(1.f);
-        glm::vec3 _position = glm::vec3(0.f, 0.f, 0.f);
-        glm::vec3 _angle = glm::vec3(0.f, 0.f, 0.f);
-
-        //std::shared_ptr<MeshRenderer> _meshRenderer = std::make_shared<MeshRenderer>();
-        Mesh _mesh;
+        std::shared_ptr<Transform> _transform = std::make_shared<Transform>();
+        std::shared_ptr<MeshRenderer> _meshRenderer = std::make_shared<MeshRenderer>();
 
     public:
         explicit GameObject(const std::string name) : _name(name) {}
-        GameObject(const std::string name, const Mesh mesh) : _name(name), _mesh(mesh) {}
+        GameObject(const std::string name, const Mesh mesh) : _name(name) {
+            _meshRenderer->setMesh(std::make_shared<Mesh>(mesh));
+        }
 
         std::string name() { return _name; }
 
-        Mesh getMesh() { return _mesh; }
-
-        //std::shared_ptr<MeshRenderer> meshRenderer();
+        std::shared_ptr<MeshRenderer> meshRenderer() { return _meshRenderer; }
+        std::shared_ptr<Transform> transform() { return _transform; }
     };
 }
 
-#endif //GLITTER_GAMEOBJECT_HPP
+#endif // GAMEOBJECT_HPP

@@ -1,0 +1,66 @@
+//
+// Created by Diordychuk Dmitry on 26.04.2022.
+//
+
+#include "Engine.hpp"
+
+using namespace ft;
+
+class Square : public Engine
+{   using Engine::Engine;
+
+    Shader shader;
+    VertexBuffer vertexBuffer;
+    ElementBuffer indexBuffer;
+    VertexArray vertexArray;
+
+    const GLfloat vertices[12] = {
+        -0.5f, -0.5f, 0.0f,
+        -0.5f,  0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+         0.5f, 0.5f,0.0f
+    };
+
+    const GLuint indices[6] = {
+        0, 1, 2,
+        1, 2, 3
+    };
+
+    void start() override {
+        shader.attach("/42run/Shaders/basic.vert");
+        shader.attach("/42run/Shaders/basic.frag");
+        shader.link();
+
+        vertexBuffer.bind();
+        vertexBuffer.load(vertices, 12);
+
+        VertexBufferLayout layout;
+        layout.push<GLfloat>(3);
+        vertexArray.addBuffer(vertexBuffer, layout);
+
+        indexBuffer.bind();
+        indexBuffer.load(indices, 6);
+
+        shader.deactivate();
+        vertexBuffer.unbind();
+        indexBuffer.unbind();
+        vertexBuffer.unbind();
+    }
+
+    void update() override {
+        shader.activate();
+        indexBuffer.bind();
+        vertexBuffer.bind();
+
+        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
+
+        vertexBuffer.unbind();
+        indexBuffer.unbind();
+    }
+};
+
+int main()
+{
+    Square square("Square", 800, 600);
+    square.loop();
+}
