@@ -13,6 +13,7 @@
 
 #include "Consts.hpp"
 #include "GraphicsContext.hpp"
+#include "GlError.hpp"
 
 
 namespace ft{
@@ -25,7 +26,7 @@ namespace ft{
             std::string  title = Consts::DEFAULT_WINDOW_TITLE,
             int width = Consts::DEFAULT_WINDOW_WIDTH,
             int height = Consts::DEFAULT_WINDOW_HEIGHT)
-        : title(std::move(title)), width(width), height(height)
+        : title(title), width(width), height(height)
         {
 
         }
@@ -35,6 +36,7 @@ namespace ft{
     private:
         GLFWwindow *m_window{};
         std::unique_ptr<GraphicsContext> m_context;
+        WindowProps m_windowProps;
 
     public:
         Window() = default;
@@ -50,6 +52,7 @@ namespace ft{
 
         bool isOpen();
 
+        WindowProps getProps() const { return m_windowProps; }
     };
 }
 

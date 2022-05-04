@@ -55,8 +55,8 @@ class TextureScene : public Engine
     }
 };
 
-int main()
-{
-    TextureScene textureScene("Texture Scene", 800, 600);
-    textureScene.loop();
-}
+//int main()
+//{
+//    TextureScene textureScene("Texture Scene", 800, 600);
+//    textureScene.loop();
+//}

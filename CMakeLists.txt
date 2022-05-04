@@ -55,7 +55,7 @@ add_definitions(-DGLFW_INCLUDE_NONE
                 -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
                                ${PROJECT_SHADERS} ${PROJECT_CONFIGS}
-                               ${VENDORS_SOURCES} 42run/Headers/ResourceManager.hpp 42run/Sources/ResourceManager.cpp 42run/Headers/Window.hpp 42run/Sources/Window.cpp 42run/Headers/GraphicsContext.hpp 42run/Sources/GraphicsContext.cpp 42run/Headers/VertexArray.hpp 42run/Headers/Buffer.hpp 42run/Headers/GlError.hpp 42run/Sources/Buffer.cpp 42run/Sources/GlError.cpp 42run/Sources/VertexArray.cpp 42run/Sources/TextureScene.cpp 42run/Sources/Texture.cpp 42run/Sources/3DboxScene.cpp)
+                               ${VENDORS_SOURCES} 42run/Headers/ResourceManager.hpp 42run/Sources/ResourceManager.cpp 42run/Headers/Window.hpp 42run/Sources/Window.cpp 42run/Headers/GraphicsContext.hpp 42run/Sources/GraphicsContext.cpp 42run/Headers/VertexArray.hpp 42run/Headers/Buffer.hpp 42run/Headers/GlError.hpp 42run/Sources/Buffer.cpp 42run/Sources/GlError.cpp 42run/Sources/VertexArray.cpp 42run/Sources/TextureScene.cpp 42run/Sources/Texture.cpp 42run/Sources/BoxTransformScene.cpp)
 target_link_libraries(${PROJECT_NAME} assimp glfw
                       ${GLFW_LIBRARIES} ${GLAD_LIBRARIES})
 set_target_properties(${PROJECT_NAME} PROPERTIES

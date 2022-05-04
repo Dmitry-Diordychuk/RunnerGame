@@ -4,8 +4,15 @@
 
 #include "Window.hpp"
 
+
 namespace ft {
     void Window::open(const WindowProps &props) {
+        ASSERT(props.width > 0);
+        ASSERT(props.height > 0);
+        m_windowProps.title = props.title;
+        m_windowProps.width = props.width;
+        m_windowProps.height = props.height;
+
         // Load GLFW and create a Window
         glfwInit();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
