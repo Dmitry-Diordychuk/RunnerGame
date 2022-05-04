@@ -44,11 +44,9 @@ namespace ft
         void bind(unsigned int location, glm::mat4 const & matrix);
         template<typename T> Shader & bind(std::string const & name, T&& value)
         {
-            ASSERT(!name.empty())
-
             int location = glGetUniformLocation(m_Program, name.c_str());
             if (location == -1) {
-                throw std::runtime_error("Missing Uniform: " + name);
+                ASSERT(false);
             }
             else bind(location, std::forward<T>(value));
             return *this;

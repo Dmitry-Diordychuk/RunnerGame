@@ -5,6 +5,12 @@
 #ifndef ENGINE_HPP
 #define ENGINE_HPP
 
+#include <memory>
+
+#include "Buffer.hpp"
+#include "VertexArray.hpp"
+#include "Texture.hpp"
+
 #include "Window.hpp"
 #include "Renderer.hpp"
 #include "GameObject.hpp"
@@ -13,10 +19,6 @@
 #include "Shader.hpp"
 #include "Camera.hpp"
 
-#include "Buffer.hpp"
-#include "VertexArray.hpp"
-
-#include <memory>
 
 namespace ft {
     class Engine {

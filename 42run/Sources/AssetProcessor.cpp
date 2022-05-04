@@ -2,9 +2,9 @@
 // Created by Diordychuk Dmitry on 28.04.2022.
 //
 
-#include "AssetProcessor.hpp"
+//#include "AssetProcessor.hpp"
 
-namespace ft {
+//namespace ft {
 //
 //    void AssetProcessor::processAsset(const std::string &filename) {
 //        const aiScene *scene = loadAsset(filename);
@@ -60,4 +60,4 @@ namespace ft {
 //
 //        //return Mesh::Mesh()
 //    }
-}
+//}

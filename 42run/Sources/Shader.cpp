@@ -60,31 +60,22 @@ namespace ft
 
     GLuint Shader::create(std::string const & filename)
     {
-        ASSERT(!filename.empty())
         auto index = filename.rfind(".");
         auto ext = filename.substr(index + 1);
         if (ext == "comp") {
-            GLClearError();
-            GLuint shader = glCreateShader(GL_COMPUTE_SHADER);
-            GLLogCall();
+            GLCall(GLuint shader = glCreateShader(GL_COMPUTE_SHADER));
             return shader;
         }
         else if (ext == "frag") {
-            GLClearError();
-            GLuint shader = glCreateShader(GL_FRAGMENT_SHADER);
-            GLLogCall();
+            GLCall(GLuint shader = glCreateShader(GL_FRAGMENT_SHADER));
             return shader;
         }
         else if (ext == "geom") {
-            GLClearError();
-            GLuint shader = glCreateShader(GL_GEOMETRY_SHADER);
-            GLLogCall();
+            GLCall(GLuint shader = glCreateShader(GL_GEOMETRY_SHADER));
             return shader;
         }
         else if (ext == "vert") {
-            GLClearError();
-            GLuint shader = glCreateShader(GL_VERTEX_SHADER);
-            GLLogCall();
+            GLCall(GLuint shader = glCreateShader(GL_VERTEX_SHADER));
             return shader;
         }
         ASSERT(false)

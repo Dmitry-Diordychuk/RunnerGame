@@ -15,15 +15,15 @@ namespace ft{
 
         const std::vector<VertexBufferElement>& elements = layout.getElements();
         const unsigned int stride = layout.getStride();
-        int i = 0;
+
         unsigned int offset = 0;
-        std::for_each(elements.begin(), elements.end(),
-        [stride, &i, &offset] (const VertexBufferElement& element){
-            GLCall(glEnableVertexAttribArray(i));
+        for (unsigned int i = 0; i < elements.size(); i++)
+        {
+            const VertexBufferElement& element = elements[i];
             GLCall(glVertexAttribPointer(i, element.count, element.type, element.normalized ? GL_TRUE : GL_FALSE, stride, (void*)offset));
+            GLCall(glEnableVertexAttribArray(i));
             offset += element.getSizeOfType() * element.count;
-            i++;
-        });
+        }
     }
 
     void VertexArray::bind() const {
