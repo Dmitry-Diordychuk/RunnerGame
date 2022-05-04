@@ -5,7 +5,7 @@
 #include "Buffer.hpp"
 
 namespace ft{
-    VertexBuffer::VertexBuffer() {
+    VertexBuffer::VertexBuffer() : m_count(0) {
         GLCall(glGenBuffers(1, (GLuint *)(&m_VBO)));
     }
 
@@ -23,9 +23,10 @@ namespace ft{
 
     void VertexBuffer::load(const GLfloat *vertices, size_t count) {
         GLCall(glBufferData(GL_ARRAY_BUFFER, count * sizeof(GLfloat), vertices, GL_STATIC_DRAW));
+        m_count = count;
     }
 
-    ElementBuffer::ElementBuffer() {
+    ElementBuffer::ElementBuffer() : m_count(0) {
         GLCall(glGenBuffers(1, (GLuint*)&m_EBO));
     }
 
@@ -43,5 +44,6 @@ namespace ft{
 
     void ElementBuffer::load(const GLuint *indices, size_t count) {
         GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(GLuint), indices, GL_STATIC_DRAW));
+        m_count = count;
     }
 }

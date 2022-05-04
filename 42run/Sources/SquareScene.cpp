@@ -40,22 +40,10 @@ class Square : public Engine
 
         indexBuffer.bind();
         indexBuffer.load(indices, 6);
-
-        shader.deactivate();
-        vertexBuffer.unbind();
-        indexBuffer.unbind();
-        vertexBuffer.unbind();
     }
 
     void update() override {
-        shader.activate();
-        indexBuffer.bind();
-        vertexBuffer.bind();
-
-        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0));
-
-        vertexBuffer.unbind();
-        indexBuffer.unbind();
+        renderer->draw(shader, vertexArray, indexBuffer);
     }
 };
 

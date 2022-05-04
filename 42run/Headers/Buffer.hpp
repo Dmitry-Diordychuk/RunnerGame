@@ -13,6 +13,7 @@ namespace ft {
     class VertexBuffer {
     private:
         GLuint m_VBO{};
+        unsigned int m_count;
 
     public:
         VertexBuffer();
@@ -22,11 +23,14 @@ namespace ft {
         void unbind() const;
 
         void load(const GLfloat *vertices, size_t count);
+
+        unsigned int getCount() const { return m_count; }
     };
 
     class ElementBuffer {
     private:
         GLuint m_EBO{};
+        unsigned int m_count;
 
     public:
         ElementBuffer();
@@ -37,6 +41,7 @@ namespace ft {
 
         void load(const GLuint *indices, size_t count);
 
+        unsigned int getCount() const { return m_count; }
     };
 }
 

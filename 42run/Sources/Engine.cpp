@@ -20,9 +20,9 @@ namespace ft {
 
             update();
 
-            for (auto &it : *scene) {
-                renderer->draw(it.second, camera);
-            }
+//            for (auto &it : *scene) {
+//                renderer->draw(it.second, camera);
+//            }
 
             window->update();
         }

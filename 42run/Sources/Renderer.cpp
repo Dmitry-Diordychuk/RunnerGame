@@ -5,11 +5,12 @@
 #include "Renderer.hpp"
 
 namespace ft {
-    void Renderer::draw(const std::shared_ptr<GameObject>& object, const std::shared_ptr<Camera>& camera) {
-//        GLfloat *view = camera->transform()->inverseModel();
-//        GLfloat *model = object->transform()->model();
-//
-//        object->meshRenderer()->drawMesh(view, model);
+    void Renderer::draw(const Shader& shader, const VertexArray& vertexArray, const ElementBuffer& indexBuffer) {
+        shader.activate();
+        vertexArray.bind();
+        indexBuffer.bind();
+
+        GLCall(glDrawElements(GL_TRIANGLES, indexBuffer.getCount(), GL_UNSIGNED_INT, nullptr));
     }
 
     void Renderer::setClearColor(const glm::vec4& color) {

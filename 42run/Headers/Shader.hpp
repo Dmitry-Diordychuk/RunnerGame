@@ -18,8 +18,8 @@ namespace ft
     private:
         // Private Member Variables
         GLuint m_Program;
-        GLint  m_Status;
-        GLint  m_Length;
+        GLint  m_Status{};
+        GLint  m_Length{};
 
         // Disable Copying and Assignment
         Shader(Shader const &) = delete;
@@ -32,11 +32,11 @@ namespace ft
         ~Shader() { glDeleteProgram(m_Program); }
 
         // Public Member Functions
-        Shader & activate();
-        void deactivate();
+        const Shader & activate() const;
+        void deactivate() const;
         Shader & attach(std::string const & filename);
         GLuint   create(std::string const & filename);
-        GLuint   get() { return m_Program; }
+        GLuint   get() const { return m_Program; }
         Shader & link();
 
         // Wrap Calls to glUniform

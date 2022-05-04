@@ -9,21 +9,19 @@
 #include "glitter.hpp"
 
 // System Headers
-#include <exception>
 #include <iostream>
 
-#include "Mesh.hpp"
-#include "Shader.hpp"
-#include "GameObject.hpp"
-#include "Camera.hpp"
-
 #include <memory>
+
+#include "Shader.hpp"
+#include "VertexArray.hpp"
+#include "Buffer.hpp"
 
 
 namespace ft {
     class Renderer {
     public:
-        static void draw(const std::shared_ptr<GameObject>& object, const std::shared_ptr<Camera>& camera);
+        static void draw(const Shader& shader, const VertexArray& vertexArray, const ElementBuffer& indexBuffer);
 
         static void setClearColor(const glm::vec4& color);
         static void clear();

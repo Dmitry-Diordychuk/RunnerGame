@@ -9,13 +9,13 @@
 // Define Namespace
 namespace ft
 {
-    Shader & Shader::activate()
+    const Shader & Shader::activate() const
     {
         GLCall(glUseProgram(m_Program));
         return *this;
     }
 
-    void Shader::deactivate()
+    void Shader::deactivate() const
     {
         GLCall(glUseProgram(0));
     }
