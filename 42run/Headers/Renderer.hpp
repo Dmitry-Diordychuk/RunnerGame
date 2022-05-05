@@ -21,6 +21,8 @@
 namespace ft {
     class Renderer {
     public:
+        static void init(int width, int height);
+
         static void draw(const Shader& shader, const VertexArray& vertexArray, const ElementBuffer& indexBuffer);
 
         static void setClearColor(const glm::vec4& color);

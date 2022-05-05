@@ -25,20 +25,21 @@ namespace ft
     }
 
     void Transform::scale(const glm::vec3 &s) {
-        _transformMatrix = glm::scale(_transformMatrix, s);
+        _scale = s;
     }
 
     void Transform::rotate(const glm::vec3 &r) {
         _angle = _angle + r;
 
-        _transformMatrix = glm::rotate(_transformMatrix, r.x, glm::vec3(1.0f, 0.0f, 0.0f));
-        _transformMatrix = glm::rotate(_transformMatrix, r.y, glm::vec3(0.0f, 1.0f, 0.0f));
-        _transformMatrix = glm::rotate(_transformMatrix, r.z, glm::vec3(0.0f, 0.0f, 1.0f));
+        glm::mat4 rotation = glm::mat4(1.0f);
+        rotation = glm::rotate(rotation, r.x, glm::vec3(1.0f, 0.0f, 0.0f));
+        rotation = glm::rotate(rotation, r.y, glm::vec3(0.0f, 1.0f, 0.0f));
+        rotation = glm::rotate(rotation, r.z, glm::vec3(0.0f, 0.0f, 1.0f));
+        transform(rotation);
     }
 
-    void Transform::rotate(const glm::vec3 &v, float rv)
-    {
-        _transformMatrix = glm::rotate(_transformMatrix, rv, v);
+    void Transform::rotate(const glm::vec3 &v, float rv) {
+        _transformMatrix = glm::rotate(_transformMatrix, rv, glm::normalize(v));
     }
 
     void Transform::rotateRelativePoint(const glm::vec3 &s, const glm::vec3 &r) {
@@ -53,63 +54,31 @@ namespace ft
         transformRelativePoint(s, glm::rotate(_transformMatrix, r, v));
     }
 
-    GLfloat *Transform::inverseModel() const {
-        GLfloat *v = new GLfloat[4 * 4];
+    glm::mat4 Transform::inverseModel() {
+        glm::mat4 translation = glm::mat4(1.0f);
+        translation[3][0] = _position.x;
+        translation[3][1] = _position.y;
+        translation[3][2] = _position.z;
 
-        glm::vec3 _left = _transformMatrix[0];
-        glm::vec3 _up = _transformMatrix[1];
-        glm::vec3 _lookAt = _transformMatrix[2];
+        glm::mat4 scale = glm::mat4(1.0f);
+        scale[0][0] = _scale.x;
+        scale[1][1] = _scale.y;
+        scale[2][2] = _scale.z;
 
-        v[0] = -static_cast<GLfloat>(_left.x);
-        v[4] = -static_cast<GLfloat>(_left.y);
-        v[8] = -static_cast<GLfloat>(_left.z);
-        v[12] = static_cast<GLfloat>(glm::dot(_position, _left));
-
-        v[1] = static_cast<GLfloat>(_up.x);
-        v[5] = static_cast<GLfloat>(_up.y);
-        v[9] = static_cast<GLfloat>(_up.z);
-        v[13] = -static_cast<GLfloat>(glm::dot(_position, _up));
-
-        v[2] = -static_cast<GLfloat>(_lookAt.x);
-        v[6] = -static_cast<GLfloat>(_lookAt.y);
-        v[10] = -static_cast<GLfloat>(_lookAt.z);
-        v[14] = static_cast<GLfloat>(glm::dot(_position, _lookAt));
-
-        v[3] = static_cast<GLfloat>(0.0f);
-        v[7] = static_cast<GLfloat>(0.0f);
-        v[11] = static_cast<GLfloat>(0.0f);
-        v[15] = static_cast<GLfloat>(1.0f);
-
-        return v;
+        return glm::inverse(translation * _transformMatrix * scale);
     }
 
-    GLfloat *Transform::model() const {
-        GLfloat *m = new GLfloat[4 * 4];
+    glm::mat4 Transform::model() {
+        glm::mat4 translation = glm::mat4(1.0f);
+        translation[3][0] = _position.x;
+        translation[3][1] = _position.y;
+        translation[3][2] = _position.z;
 
-        glm::vec3 _left = _transformMatrix[0];
-        glm::vec3 _up = _transformMatrix[1];
-        glm::vec3 _lookAt = _transformMatrix[2];
+        glm::mat4 scale = glm::mat4(1.0f);
+        scale[0][0] = _scale.x;
+        scale[1][1] = _scale.y;
+        scale[2][2] = _scale.z;
 
-        m[0] = static_cast<GLfloat>(_left.x);
-        m[4] = static_cast<GLfloat>(_up.x);
-        m[8] = static_cast<GLfloat>(_lookAt.x);
-        m[12] = static_cast<GLfloat>(_position.x);
-
-        m[1] = static_cast<GLfloat>(_left.y);
-        m[5] = static_cast<GLfloat>(_up.y);
-        m[9] = static_cast<GLfloat>(_lookAt.y);
-        m[13] = -static_cast<GLfloat>(_position.y);
-
-        m[2] = static_cast<GLfloat>(_left.z);
-        m[6] = static_cast<GLfloat>(_up.z);
-        m[10] = static_cast<GLfloat>(_lookAt.z);
-        m[14] = -static_cast<GLfloat>(_position.z);
-
-        m[3] = static_cast<GLfloat>(0.0f);
-        m[7] = static_cast<GLfloat>(0.0f);
-        m[11] = static_cast<GLfloat>(0.0f);
-        m[15] = static_cast<GLfloat>(1.0f);
-
-        return m;
+        return translation * _transformMatrix * scale;
     }
 }

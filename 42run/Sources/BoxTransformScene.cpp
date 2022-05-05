@@ -4,9 +4,6 @@
 
 #include "Engine.hpp"
 
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
 
 using namespace ft;
 
@@ -18,8 +15,14 @@ class BoxTransformScene : public Engine
     ElementBuffer indexBuffer;
     VertexArray vertexArray;
     Texture texture;
-    glm::mat4 transformMatrix = glm::mat4(1.0f);
-    glm::mat4 projectionMatrix = glm::mat4(1.0f);
+
+    glm::mat4 projectionMatrix = glm::perspective(
+            glm::radians(45.0f),
+            (float)window->getProps().width/(float)window->getProps().height,
+            0.1f,
+            100.0f);
+
+    Transform transform;
 
     const GLfloat vertices[6 * (12 + 12 + 8)] = {
          // Texture                  Color                  Texture coordinates
@@ -75,8 +78,6 @@ class BoxTransformScene : public Engine
     };
 
     void start() override {
-        glEnable(GL_DEPTH_TEST);
-
         shader.attach("/42run/Shaders/transform.vert");
         shader.attach("/42run/Shaders/texture.frag");
         shader.link();
@@ -95,21 +96,18 @@ class BoxTransformScene : public Engine
         indexBuffer.bind();
         indexBuffer.load(indices, 6 * 6);
 
-        WindowProps props = window->getProps();
-        glViewport(0, 0, props.width, props.height);
-        projectionMatrix = glm::perspective(
-                glm::radians(45.0f),
-                (float)props.width/(float)props.height,
-                0.1f, 100.0f);
+        transform.translate(glm::vec3(-4.0f, 0.0f, -10.0f));
     }
 
+#include "Debug.hpp"
     void update() override {
-        transformMatrix = glm::mat4(1.0f);
-        transformMatrix = glm::translate(transformMatrix, glm::vec3(0.0f, 0.0f, -3.0f));
-        transformMatrix = glm::rotate(transformMatrix, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
+        transform.rotate(glm::vec3(0.01f, 0.01f ,0.0f));
+        transform.translate(glm::vec3(2 * glm::sin(time->time()) * time->deltaTime(), 0.0f, 0.0f));
+        transform.scale(glm::vec3(1.0f, 1.0f, 1.0f) * (1 + glm::sin(time->time())));
 
         shader.activate();
-        shader.bind("transform", projectionMatrix * transformMatrix);
+        shader.bind("projection", projectionMatrix);
+        shader.bind("transform", transform.model());
 
         texture.bind(0);
 

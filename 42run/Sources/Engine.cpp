@@ -8,7 +8,9 @@ namespace ft {
     Engine::Engine(const std::string &name, int screenWidth, int screenHeight) {
         window->open(WindowProps(name, screenWidth, screenHeight));
         camera->init(screenWidth, screenHeight);
+        renderer->init(screenWidth, screenHeight);
         renderer->setClearColor(glm::vec4(0.1f, 0.2f, 0.3f, 1.0f));
+        time->init();
         std::cout << "Engine started" << std::endl;
     }
 
@@ -25,6 +27,7 @@ namespace ft {
 //            }
 
             window->update();
+            time->update();
         }
         window->close();
     }

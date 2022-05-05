@@ -10,9 +10,12 @@
 #include "Buffer.hpp"
 #include "VertexArray.hpp"
 #include "Texture.hpp"
+#include "Transform.hpp"
 
 #include "Window.hpp"
 #include "Renderer.hpp"
+#include "Time.hpp"
+
 #include "GameObject.hpp"
 #include "Scene.hpp"
 #include "Primitives.hpp"
@@ -28,6 +31,7 @@ namespace ft {
     protected:
         std::unique_ptr<Window> window = std::make_unique<Window>();
         std::unique_ptr<Renderer> renderer = std::unique_ptr<Renderer>();
+        std::unique_ptr<Time> time = std::unique_ptr<Time>();
 
         const std::shared_ptr<Scene> scene = std::make_shared<Scene>();
         const std::shared_ptr<Camera> camera = std::make_shared<Camera>();
