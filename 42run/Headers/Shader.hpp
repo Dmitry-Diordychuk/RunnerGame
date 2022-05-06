@@ -49,6 +49,7 @@ namespace ft
         {
             int location = glGetUniformLocation(m_Program, name.c_str());
             if (location == -1) {
+                std::cout << "Shader error: failed to bind " << name << " uniform" << std::endl;
                 ASSERT(false);
             }
             else bind(location, std::forward<T>(value));

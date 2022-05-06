@@ -15,6 +15,7 @@
 #include "Window.hpp"
 #include "Renderer.hpp"
 #include "Time.hpp"
+#include "Model.hpp"
 
 #include "GameObject.hpp"
 #include "Scene.hpp"

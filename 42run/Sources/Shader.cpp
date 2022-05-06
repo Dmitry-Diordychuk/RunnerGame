@@ -49,6 +49,7 @@ namespace ft
             GLCall(glGetShaderiv(shader, GL_INFO_LOG_LENGTH, & m_Length));
             std::unique_ptr<char[]> buffer(new char[m_Length]);
             GLCall(glGetShaderInfoLog(shader, m_Length, nullptr, buffer.get()));
+            std::cout << "Shader error: " << buffer.get() << std::endl;
             ASSERT(false)
         }
 

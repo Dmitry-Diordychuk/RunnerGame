@@ -12,6 +12,7 @@
 
 #include "GlError.hpp"
 
+
 namespace ft {
     class Texture {
     private:
@@ -27,6 +28,11 @@ namespace ft {
         void load(const std::string& filepath);
         void bind(unsigned int slot);
         void unbind();
+    };
+
+    struct ModelTexture {
+        GLuint      id;
+        std::string type;
     };
 }
 

@@ -11,13 +11,13 @@ namespace ft
     }
 
     void Transform::transformRelativePoint(const glm::vec3 &point, const glm::mat4 &transform) {
-        // translate object in new coordinate system connected with point
-        _transformMatrix = glm::translate(_transformMatrix, _position - point);
-        // transform object in the new coordinate system
-        _transformMatrix = transform * _transformMatrix;
-        // translate object back in self connected coordinate system
-        _position = _transformMatrix[3] + glm::vec4(point, 1.0f);
-        _transformMatrix = glm::translate(_transformMatrix, -(glm::vec3(_transformMatrix[3])));
+//        // translate object in new coordinate system connected with point
+//        _transformMatrix = glm::translate(_transformMatrix, _position - point);
+//        // transform object in the new coordinate system
+//        _transformMatrix = transform * _transformMatrix;
+//        // translate object back in self connected coordinate system
+//        _position = _transformMatrix[3] + glm::vec4(point, 1.0f);
+//        _transformMatrix = glm::translate(_transformMatrix, -(glm::vec3(_transformMatrix[3])));
     }
 
     void Transform::translate(const glm::vec3 &dv) {
@@ -43,15 +43,15 @@ namespace ft
     }
 
     void Transform::rotateRelativePoint(const glm::vec3 &s, const glm::vec3 &r) {
-        _angle = _angle + r;
-
-        transformRelativePoint(s, glm::rotate(_transformMatrix, r.x, s));
-        transformRelativePoint(s, glm::rotate(_transformMatrix, r.y, s));
-        transformRelativePoint(s, glm::rotate(_transformMatrix, r.z, s));
+//        _angle = _angle + r;
+//
+//        transformRelativePoint(s, glm::rotate(_transformMatrix, r.x, s));
+//        transformRelativePoint(s, glm::rotate(_transformMatrix, r.y, s));
+//        transformRelativePoint(s, glm::rotate(_transformMatrix, r.z, s));
     }
 
     void Transform::rotateRelativePoint(const glm::vec3 &s, const glm::vec3 &v, float r) {
-        transformRelativePoint(s, glm::rotate(_transformMatrix, r, v));
+        //transformRelativePoint(s, glm::rotate(_transformMatrix, r, v));
     }
 
     glm::mat4 Transform::inverseModel() {

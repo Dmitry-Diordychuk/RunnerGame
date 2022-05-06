@@ -99,7 +99,7 @@ class BoxTransformScene : public Engine
         transform.translate(glm::vec3(-4.0f, 0.0f, -10.0f));
     }
 
-#include "Debug.hpp"
+
     void update() override {
         transform.rotate(glm::vec3(0.01f, 0.01f ,0.0f));
         transform.translate(glm::vec3(2 * glm::sin(time->time()) * time->deltaTime(), 0.0f, 0.0f));
@@ -115,8 +115,8 @@ class BoxTransformScene : public Engine
     }
 };
 
-int main()
-{
-    BoxTransformScene box("Box Transform Scene", 800, 600);
-    box.loop();
-}
+//int main()
+//{
+//    BoxTransformScene box("Box Transform Scene", 800, 600);
+//    box.loop();
+//}

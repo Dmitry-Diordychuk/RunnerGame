@@ -12,7 +12,18 @@ namespace ft
 
     bool GLLogCall(const char *function, const char *file, int line) {
         while (GLenum error = glGetError()) {
-            std::cout << "[OpenGL Error] (" << error << ")" << function << " " << file << " " << line << std::endl;
+            std::string errorStr;
+            switch (error)
+            {
+                case GL_INVALID_ENUM:                  errorStr = "INVALID_ENUM"; break;
+                case GL_INVALID_VALUE:                 errorStr = "INVALID_VALUE"; break;
+                case GL_INVALID_OPERATION:             errorStr = "INVALID_OPERATION"; break;
+                case GL_STACK_OVERFLOW:                errorStr = "STACK_OVERFLOW"; break;
+                case GL_STACK_UNDERFLOW:               errorStr = "STACK_UNDERFLOW"; break;
+                case GL_OUT_OF_MEMORY:                 errorStr = "OUT_OF_MEMORY"; break;
+                case GL_INVALID_FRAMEBUFFER_OPERATION: errorStr = "INVALID_FRAMEBUFFER_OPERATION"; break;
+            }
+            std::cout << "[OpenGL Error] (" << errorStr << ")" << function << " " << file << " " << line << std::endl;
             return false;
         }
         return true;
