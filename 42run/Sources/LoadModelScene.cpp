@@ -13,10 +13,11 @@ class LoadModelScene : public Engine
     Shader shader;
     Texture texture;
     Model model = Model("/42run/Models/Skull/source/skull.obj");
+    //Model model = Model("/42run/Models/Cubes.obj");
 
-    VertexBuffer vertexBuffer;
-    ElementBuffer indexBuffer;
-    VertexArray vertexArray;
+    std::vector<std::unique_ptr<VertexBuffer>> vertexBuffers;
+    std::vector<std::unique_ptr<ElementBuffer>> indexBuffers;
+    std::vector<std::unique_ptr<VertexArray>> vertexArrays;
 
     glm::mat4 projectionMatrix = glm::perspective(
             glm::radians(45.0f),
@@ -27,8 +28,8 @@ class LoadModelScene : public Engine
     Transform transform;
 
     void start() override {
-        shader.attach("/42run/Shaders/normal.vert");
-        shader.attach("/42run/Shaders/normal.frag");
+        shader.attach("/42run/Shaders/transform.vert");
+        shader.attach("/42run/Shaders/texture.frag");
         shader.link();
 
         texture.load("/42run/Models/Skull/textures/difuso_flip_oscuro.jpg");
@@ -38,17 +39,25 @@ class LoadModelScene : public Engine
             std::vector<Vertex> vertices = it.vertices();
             std::vector<GLuint> indices = it.indices();
 
-            vertexBuffer.bind();
-            vertexBuffer.load((GLfloat*)&vertices[0], vertices.size() * (3 + 3 + 2));
+            std::unique_ptr<VertexBuffer> vertexBuffer = std::make_unique<VertexBuffer>();
+            vertexBuffer->bind();
+            vertexBuffer->load((GLfloat*)&vertices[0], vertices.size() * (3 + 3 + 2));
 
             VertexBufferLayout layout;
             layout.push<GLfloat>(3);
             layout.push<GLfloat>(3);
             layout.push<GLfloat>(2);
-            vertexArray.addBuffer(vertexBuffer, layout);
 
-            indexBuffer.bind();
-            indexBuffer.load(&indices[0], indices.size());
+            std::unique_ptr<VertexArray> vertexArray = std::make_unique<VertexArray>();
+            vertexArray->addBuffer(*vertexBuffer, layout);
+
+            std::unique_ptr<ElementBuffer> indexBuffer = std::make_unique<ElementBuffer>();
+            indexBuffer->bind();
+            indexBuffer->load(&indices[0], indices.size());
+
+            vertexBuffers.push_back(std::move(vertexBuffer));
+            vertexArrays.push_back(std::move(vertexArray));
+            indexBuffers.push_back(std::move(indexBuffer));
         }
 
         transform.translate(glm::vec3(0.0f, 0.0f, -3.0f));
@@ -59,11 +68,13 @@ class LoadModelScene : public Engine
 
         shader.activate();
         shader.bind("projection", projectionMatrix);
-        shader.bind("model", transform.model());
+        shader.bind("transform", transform.model());
 
         texture.bind(0);
 
-        renderer->draw(shader, vertexArray, indexBuffer);
+        for (int i = 0; i < vertexArrays.size(); i++) {
+            renderer->draw(shader, *vertexArrays[i], *indexBuffers[i]);
+        }
     }
 };
 
