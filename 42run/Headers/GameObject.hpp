@@ -8,28 +8,31 @@
 #include <string>
 
 #include "Transform.hpp"
-#include "MeshRenderer.hpp"
+#include "Model.hpp"
+#include "Texture.hpp"
 
 #include <memory>
+#include <utility>
 
 namespace ft {
     class GameObject {
     private:
-        const std::string _name = "GameObject";
+        const std::string m_name = "GameObject";
 
-        std::shared_ptr<Transform> _transform = std::make_shared<Transform>();
-        std::shared_ptr<MeshRenderer> _meshRenderer = std::make_shared<MeshRenderer>();
+        std::shared_ptr<Transform> m_transform = std::make_shared<Transform>();
+        std::shared_ptr<Model> m_model = nullptr;
+        std::shared_ptr<Texture> m_texture = nullptr;
 
     public:
-        explicit GameObject(const std::string name) : _name(name) {}
-        GameObject(const std::string name, const Mesh mesh) : _name(name) {
-            _meshRenderer->setMesh(std::make_shared<Mesh>(mesh));
-        }
+        explicit GameObject(std::string  name) : m_name(std::move(name)) {}
+        GameObject(std::string name, Model* model, Texture* texture);
 
-        std::string name() { return _name; }
+        std::string name() { return m_name; }
+        std::shared_ptr<Transform> transform() const { return m_transform; }
+        std::shared_ptr<Model> model() const { return m_model; }
+        std::shared_ptr<Texture> texture() const { return m_texture; }
 
-        std::shared_ptr<MeshRenderer> meshRenderer() { return _meshRenderer; }
-        std::shared_ptr<Transform> transform() { return _transform; }
+
     };
 }
 

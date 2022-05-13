@@ -23,6 +23,7 @@ namespace ft {
 
     public:
         Texture();
+        explicit Texture(const std::string& filepath);
         ~Texture();
 
         void load(const std::string& filepath);

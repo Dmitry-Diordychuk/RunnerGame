@@ -5,9 +5,14 @@
 #include "Texture.hpp"
 
 ft::Texture::Texture()
-    : m_textureId(0), m_imageBuffer(nullptr), m_width(0), m_height(0), m_bitsPerPixel(0)
+    : m_imageBuffer(nullptr), m_width(0), m_height(0), m_bitsPerPixel(0)
 {
     GLCall(glGenTextures(1, &m_textureId));
+}
+
+ft::Texture::Texture(const std::string &filepath) : m_imageBuffer(nullptr), m_width(0), m_height(0), m_bitsPerPixel(0) {
+    GLCall(glGenTextures(1, &m_textureId));
+    load(filepath);
 }
 
 ft::Texture::~Texture() {
@@ -30,7 +35,6 @@ void ft::Texture::load(const std::string &filepath) {
     {
         GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_imageBuffer));
         GLCall(glGenerateMipmap(GL_TEXTURE_2D));
-        GLCall(glBindTexture(GL_TEXTURE_2D, 0));
     }
     else
     {
@@ -39,12 +43,12 @@ void ft::Texture::load(const std::string &filepath) {
     stbi_image_free(m_imageBuffer);
 }
 
+
 void ft::Texture::bind(unsigned int slot) {
     ASSERT(slot < 8);
 
     GLCall(glActiveTexture(GL_TEXTURE0 + slot));
     GLCall(glBindTexture(GL_TEXTURE_2D, m_textureId));
-
 }
 
 void ft::Texture::unbind() {

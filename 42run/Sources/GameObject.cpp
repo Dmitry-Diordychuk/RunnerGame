@@ -4,6 +4,13 @@
 
 #include "GameObject.hpp"
 
-namespace ft {
+#include <utility>
 
+namespace ft {
+    GameObject::GameObject(std::string name, Model* model, Texture* texture)
+        : m_name(std::move(name))
+    {
+        m_model = std::shared_ptr<Model>(model);
+        m_texture = std::shared_ptr<Texture>(texture);
+    }
 }

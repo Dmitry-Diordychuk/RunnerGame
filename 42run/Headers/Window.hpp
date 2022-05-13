@@ -6,6 +6,7 @@
 #define WINDOW_HPP
 
 #include <GLFW/glfw3.h>
+//#include <glad/glad.h>
 
 #include <memory>
 #include <string>
@@ -14,6 +15,7 @@
 #include "Consts.hpp"
 #include "GraphicsContext.hpp"
 #include "GlError.hpp"
+#include "Event.hpp"
 
 
 namespace ft{
@@ -21,12 +23,13 @@ namespace ft{
     {
         std::string title;
         int width, height;
+        std::shared_ptr<Event> event;
 
         explicit WindowProps(
             std::string  title = Consts::DEFAULT_WINDOW_TITLE,
             int width = Consts::DEFAULT_WINDOW_WIDTH,
             int height = Consts::DEFAULT_WINDOW_HEIGHT)
-        : title(title), width(width), height(height)
+        : title(std::move(title)), width(width), height(height), event(nullptr)
         {
 
         }

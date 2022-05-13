@@ -23,7 +23,7 @@ namespace ft
     public:
         Scene() = default;
 
-        std::shared_ptr<GameObject> addGameObject(std::shared_ptr<GameObject> object);
+        std::shared_ptr<GameObject> addGameObject(GameObject* object);
 
         std::map<std::string, std::shared_ptr<GameObject>>::iterator begin() { return _objects.begin(); }
         std::map<std::string, std::shared_ptr<GameObject>>::iterator end() { return _objects.end(); }

@@ -4,12 +4,17 @@
 
 #include "Engine.hpp"
 
+#include <utility>
+
 namespace ft {
     Engine::Engine(const std::string &name, int screenWidth, int screenHeight) {
+        eventHandler->init(
+            [this](std::shared_ptr<Event> event) { onWindowEvent(event); },
+            [this](std::shared_ptr<Event> event) { onKeyEvent(event); }
+        );
         window->open(WindowProps(name, screenWidth, screenHeight));
         camera->init(screenWidth, screenHeight);
-        renderer->init(screenWidth, screenHeight);
-        renderer->setClearColor(glm::vec4(0.1f, 0.2f, 0.3f, 1.0f));
+        renderer->init(screenWidth, screenHeight, glm::vec4(0.1f, 0.2f, 0.3f, 1.0f));
         time->init();
         std::cout << "Engine started" << std::endl;
     }
@@ -22,11 +27,13 @@ namespace ft {
 
             update();
 
-//            for (auto &it : *scene) {
-//                renderer->draw(it.second, camera);
-//            }
+            for (auto &it : *scene) {
+                renderer->draw(*it.second, *camera);
+            }
+
 
             window->update();
+            eventHandler->update(window->getProps().event);
             time->update();
         }
         window->close();

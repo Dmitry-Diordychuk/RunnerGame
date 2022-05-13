@@ -19,7 +19,7 @@ namespace ft {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-        glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+        //glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
         m_window = glfwCreateWindow(
                 props.width,
@@ -36,6 +36,33 @@ namespace ft {
 
         m_context = GraphicsContext::create(m_window);
         m_context->init();
+
+        glfwSetWindowUserPointer(m_window, &m_windowProps);
+        glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow *window, int width, int height){
+            auto *props = static_cast<WindowProps*>(glfwGetWindowUserPointer(window));
+            props->event = std::make_shared<WindowResizeEvent>(width, height);
+        });
+
+        glfwSetWindowCloseCallback(m_window, [](GLFWwindow *window){
+            auto *props = static_cast<WindowProps*>(glfwGetWindowUserPointer(window));
+            props->event = std::make_shared<WindowCloseEvent>();
+        });
+
+        glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+            auto *props = static_cast<WindowProps*>(glfwGetWindowUserPointer(window));
+            if (action == GLFW_PRESS)
+            {
+                props->event = std::make_shared<KeyPressEvent>(key);
+            }
+            else if (action == GLFW_RELEASE)
+            {
+                props->event = std::make_shared<KeyReleaseEvent>(key);
+            }
+            else if (action == GLFW_REPEAT)
+            {
+                props->event = std::make_shared<KeyPressEvent>(key);
+            }
+        });
     }
 
     void Window::close() {

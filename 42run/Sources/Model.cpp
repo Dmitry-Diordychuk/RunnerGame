@@ -19,6 +19,38 @@ namespace ft
         m_directory = path.substr(0, path.find_last_of('/'));
 
         processNode(scene->mRootNode, scene);
+
+        loadInGPU();
+    }
+
+    void Model::loadInGPU() {
+        for (auto& it: m_meshes)
+        {
+            std::vector<Vertex> vertices = it.vertices();
+            std::vector<GLuint> indices = it.indices();
+
+            std::unique_ptr<VertexBuffer> vertexBuffer = std::make_unique<VertexBuffer>();
+            vertexBuffer->bind();
+            vertexBuffer->load((GLfloat*)&vertices[0], vertices.size() * (3 + 3 + 2));
+
+            VertexBufferLayout layout;
+            layout.push<GLfloat>(3);
+            layout.push<GLfloat>(3);
+            layout.push<GLfloat>(2);
+
+            std::unique_ptr<VertexArray> vertexArray = std::make_unique<VertexArray>();
+            vertexArray->addBuffer(*vertexBuffer, layout);
+
+
+            std::unique_ptr<ElementBuffer> indexBuffer = std::make_unique<ElementBuffer>();
+            indexBuffer->bind();
+            indexBuffer->load(&indices[0], indices.size());
+
+            m_vertexBuffers.push_back(std::move(vertexBuffer));
+            m_vertexArrays.push_back(std::move(vertexArray));
+            m_indexBuffers.push_back(std::move(indexBuffer));
+            m_totalMeshes++;
+        }
     }
 
     void Model::processNode(aiNode *node, const aiScene *scene) {
@@ -113,6 +145,23 @@ namespace ft
 //
 //        // return a mesh object created from the extracted mesh data
         return Mesh(vertices, indices, textures);
+    }
+
+    std::shared_ptr<VertexBuffer> Model::getVBO(int i) {
+        return m_vertexBuffers[i];
+    }
+
+    std::shared_ptr<ElementBuffer> Model::getEBO(int i) {
+        return m_indexBuffers[i];
+    }
+
+    std::shared_ptr<VertexArray> Model::getVAO(int i) {
+        return m_vertexArrays[i];
+    }
+
+    void Model::bindMesh(int i) {
+        m_vertexArrays[i]->bind();
+        m_indexBuffers[i]->bind();
     }
 
 

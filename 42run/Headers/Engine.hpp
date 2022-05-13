@@ -16,6 +16,7 @@
 #include "Renderer.hpp"
 #include "Time.hpp"
 #include "Model.hpp"
+#include "Event.hpp"
 
 #include "GameObject.hpp"
 #include "Scene.hpp"
@@ -25,21 +26,32 @@
 
 
 namespace ft {
+    template <typename T>
+    using Ref = std::shared_ptr<T>;
+
+    template <typename T>
+    using Scop = std::unique_ptr<T>;
+
     class Engine {
     private:
         std::string _name;
 
     protected:
-        std::unique_ptr<Window> window = std::make_unique<Window>();
-        std::unique_ptr<Renderer> renderer = std::unique_ptr<Renderer>();
-        std::unique_ptr<Time> time = std::unique_ptr<Time>();
+        Scop<EventHandler> eventHandler = std::make_unique<EventHandler>();
+        Scop<Window> window = std::make_unique<Window>();
+        Scop<Renderer> renderer = std::unique_ptr<Renderer>();
+        Scop<Time> time = std::unique_ptr<Time>();
 
-        const std::shared_ptr<Scene> scene = std::make_shared<Scene>();
-        const std::shared_ptr<Camera> camera = std::make_shared<Camera>();
+        const Ref<Scene> scene = std::make_shared<Scene>();
+        const Ref<Camera> camera = std::make_shared<Camera>();
 
         virtual void start() {}
 
         virtual void update() {}
+
+        virtual void onKeyEvent(std::shared_ptr<Event>&) {}
+
+        virtual void onWindowEvent(std::shared_ptr<Event>&) {}
 
         Engine() = default;
 

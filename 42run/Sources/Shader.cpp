@@ -21,6 +21,7 @@ namespace ft
     }
 
     void Shader::bind(unsigned int location, float value) { GLCall(glUniform1f(location, value)); }
+    void Shader::bind(unsigned int location, glm::vec3 const &vec) { GLCall(glUniform3fv(location, 1, glm::value_ptr(vec))); }
     void Shader::bind(unsigned int location, glm::mat4 const & matrix)
     {
         GLCall(glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix)));

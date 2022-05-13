@@ -21,6 +21,8 @@ namespace ft {
         glm::vec3 _angle = glm::vec3(0.0f, 0.0f, 0.0f);
 
     public:
+        glm::vec3 position() { return _position; }
+
         void transform(const glm::mat4 &t);
 
         void transformRelativePoint(const glm::vec3 &point, const glm::mat4 &transform);
