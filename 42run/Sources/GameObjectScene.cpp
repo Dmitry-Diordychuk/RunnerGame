@@ -10,9 +10,15 @@ class GameObjectScene : public Engine
 {   using Engine::Engine;
 
     Ref<GameObject> skull = scene->addGameObject(new GameObject(
-            "Skull",
-            new Model("/42run/Models/Skull/source/skull.obj"),
-            new Texture("/42run/Models/Skull/textures/difuso_flip_oscuro.jpg")
+        "Skull",
+        new Model("/42run/Models/Skull/source/skull.obj"),
+        new Texture("/42run/Models/Skull/textures/difuso_flip_oscuro.jpg")
+    ));
+
+    Ref<GameObject> skull2 = scene->addGameObject(new GameObject(
+        "Skull2",
+        new Model("/42run/Models/Skull/source/skull.obj"),
+        new Texture("/42run/Models/Skull/textures/difuso_flip_oscuro.jpg")
     ));
 
     Ref<GameObject> room = scene->addGameObject(new GameObject(
@@ -54,17 +60,20 @@ class GameObjectScene : public Engine
 
     void start() override {
         skull->transform()->translate(glm::vec3(0.0f, 0.0f, -5.0f));
+
+        skull2->transform()->translate(glm::vec3(2.0f, 0.0f, -5.0f));
         room->transform()->translate(glm::vec3(-3.0f, -5.0f, -1.5f));
         room->transform()->scale(glm::vec3(8.0f, 8.0f, 8.0f));
     }
 
     void update() override {
         skull->transform()->rotate(glm::vec3(0.0f, 0.01f, 0.0));
+        skull2->transform()->rotate(glm::vec3(0.0f, -9.8f, 0.0));
     }
 };
 
-int main()
-{
-    GameObjectScene gameObjectScene("Game Object Scene", 800, 600);
-    gameObjectScene.loop();
-}
+//int main()
+//{
+//    GameObjectScene gameObjectScene("Game Object Scene", 800, 600);
+//    gameObjectScene.loop();
+//}

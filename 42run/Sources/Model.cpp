@@ -23,6 +23,50 @@ namespace ft
         loadInGPU();
     }
 
+    void Model::loadBox(glm::vec3 center, float halfX, float halfY, float halfZ) {
+        std::vector<Vertex> vertices = {
+            Vertex{glm::vec3(center.x - halfX, center.y - halfY, center.z - halfZ), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
+            Vertex{glm::vec3(center.x - halfX, center.y + halfY, center.z - halfZ), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
+            Vertex{glm::vec3(center.x + halfX, center.y - halfY, center.z - halfZ), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
+            Vertex{glm::vec3(center.x + halfX, center.y + halfY, center.z - halfZ), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
+
+            Vertex{glm::vec3(center.x - halfX, center.y - halfY, center.z + halfZ), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
+            Vertex{glm::vec3(center.x - halfX, center.y + halfY, center.z + halfZ), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
+            Vertex{glm::vec3(center.x + halfX, center.y - halfY, center.z + halfZ), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
+            Vertex{glm::vec3(center.x + halfX, center.y + halfY, center.z + halfZ), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
+        };
+
+        std::vector<GLuint> indices = {
+            0, 1, 1, 3, 3, 2, 2, 0,
+            0, 4, 4, 5, 5, 1, 1, 4,
+            4, 6, 6, 7, 7, 5, 5, 6,
+            6, 2, 2, 3, 3, 7, 7, 2,
+            2, 4, 5, 3
+        };
+
+        std::unique_ptr<VertexBuffer> vertexBuffer = std::make_unique<VertexBuffer>();
+        vertexBuffer->bind();
+        vertexBuffer->load((GLfloat*)&vertices[0], vertices.size() * (3 + 3 + 2));
+
+        VertexBufferLayout layout;
+        layout.push<GLfloat>(3);
+        layout.push<GLfloat>(3);
+        layout.push<GLfloat>(2);
+
+        std::unique_ptr<VertexArray> vertexArray = std::make_unique<VertexArray>();
+        vertexArray->addBuffer(*vertexBuffer, layout);
+
+
+        std::unique_ptr<ElementBuffer> indexBuffer = std::make_unique<ElementBuffer>();
+        indexBuffer->bind();
+        indexBuffer->load(&indices[0], indices.size());
+
+        m_vertexBuffers.push_back(std::move(vertexBuffer));
+        m_vertexArrays.push_back(std::move(vertexArray));
+        m_indexBuffers.push_back(std::move(indexBuffer));
+        m_totalMeshes++;
+    }
+
     void Model::loadInGPU() {
         for (auto& it: m_meshes)
         {
@@ -82,6 +126,27 @@ namespace ft
             vector.y = mesh->mVertices[i].y;
             vector.z = mesh->mVertices[i].z;
             vertex.position = vector;
+
+            if (vector.x < m_min.x) {
+                m_min = glm::vec3(vector.x, m_min.y, m_min.z);
+            }
+            if (vector.y < m_min.y) {
+                m_min = glm::vec3(m_min.x, vector.y, m_min.z);
+            }
+            if (vector.z < m_min.z) {
+                m_min = glm::vec3(m_min.x, m_min.y, vector.z);
+            }
+
+            if (vector.x > m_max.x) {
+                m_max = glm::vec3(vector.x, m_max.y, m_max.z);
+            }
+            if (vector.y > m_max.y) {
+                m_max = glm::vec3(m_max.x, vector.y, m_max.z);
+            }
+            if (vector.z > m_max.z) {
+                m_max = glm::vec3(m_max.x, m_max.y, vector.z);
+            }
+
             // normals
             if (mesh->HasNormals()) {
                 vector.x = mesh->mNormals[i].x;

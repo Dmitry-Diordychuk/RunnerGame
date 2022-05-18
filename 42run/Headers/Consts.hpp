@@ -10,6 +10,8 @@
 namespace ft {
     namespace Consts
     {
+        const bool IS_COLLISION_DEBUG_ON = true;
+
         const int DEFAULT_WINDOW_WIDTH = 800;
         const int DEFAULT_WINDOW_HEIGHT = 600;
         const std::string DEFAULT_WINDOW_TITLE = "Game Engine";

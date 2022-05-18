@@ -12,9 +12,10 @@
 
 #include <memory>
 
-
 namespace ft
 {
+    class GameObject;
+
     class Scene
     {
     private:

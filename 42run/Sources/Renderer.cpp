@@ -4,6 +4,7 @@
 
 #include "Renderer.hpp"
 #include "Camera.hpp"
+#include "Consts.hpp"
 
 namespace ft {
     int Renderer::m_width;
@@ -43,7 +44,9 @@ namespace ft {
     }
 
     void Renderer::draw(Shader &shader, const GameObject& gameObject, const Camera& camera) {
-        gameObject.texture()->bind(0);
+        if (gameObject.texture()) {
+            gameObject.texture()->bind(0);
+        }
         shader.activate();
 
         shader.bind("projection", camera.projectionMatrix());
@@ -51,12 +54,20 @@ namespace ft {
         shader.bind("model", gameObject.transform()->model());
         shader.bind("ambientLightingColor", glm::vec3(0.5f, 0.5f, 0.5f));
         shader.bind("diffuseLightingColor", glm::vec3(1.0f, 1.0f, 1.0f));
-        shader.bind("lightPos", glm::vec3(3.0f, 2.0f, 0.0f));
+        shader.bind("lightPos", camera.transform()->position());
 
-        for (int i = 0; i < gameObject.model()->meshCounter(); i++)
+        if (gameObject.model()) {
+            for (int i = 0; i < gameObject.model()->meshCounter(); i++) {
+                gameObject.model()->bindMesh(i);
+                GLCall(glDrawElements(GL_TRIANGLES, gameObject.model()->getEBO(i)->getCount(), GL_UNSIGNED_INT,
+                                      nullptr));
+            }
+        }
+
+        if (Consts::IS_COLLISION_DEBUG_ON && gameObject.collider())
         {
-            gameObject.model()->bindMesh(i);
-            GLCall(glDrawElements(GL_TRIANGLES, gameObject.model()->getEBO(i)->getCount(), GL_UNSIGNED_INT, nullptr));
+            gameObject.collider()->model().bindMesh(0);
+            GLCall(glDrawElements(GL_LINE_LOOP, gameObject.collider()->model().getEBO(0)->getCount(), GL_UNSIGNED_INT, nullptr));
         }
     }
 

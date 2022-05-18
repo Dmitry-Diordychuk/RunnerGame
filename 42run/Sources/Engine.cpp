@@ -15,11 +15,11 @@ namespace ft {
         window->open(WindowProps(name, screenWidth, screenHeight));
         camera->init(screenWidth, screenHeight);
         renderer->init(screenWidth, screenHeight, glm::vec4(0.1f, 0.2f, 0.3f, 1.0f));
-        time->init();
         std::cout << "Engine started" << std::endl;
     }
 
     void ft::Engine::loop() {
+        time->init();
         start();
 
         while (window->isOpen()) {
@@ -27,10 +27,13 @@ namespace ft {
 
             update();
 
-            for (auto &it : *scene) {
+            for (auto it : *scene) {
+                Ref<GameObject> gameObject = it.second;
+
+                gameObject->updatePhysics(time->deltaTime(), scene);
+
                 renderer->draw(*it.second, *camera);
             }
-
 
             window->update();
             eventHandler->update(window->getProps().event);
