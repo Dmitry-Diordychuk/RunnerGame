@@ -32,7 +32,7 @@ namespace ft
 
         bool isCollide(const std::shared_ptr<Collider>& other);
 
-        Transform& center() { return m_center; }
+        std::shared_ptr<Transform> center() { return m_center; }
 
         Callback callback() { return m_callback; }
 
@@ -42,7 +42,7 @@ namespace ft
     protected:
         ColliderType m_type;
         Callback m_callback;
-        Transform m_center;
+        std::shared_ptr<Transform> m_center = std::make_shared<Transform>();
         Model m_model;
 
     };

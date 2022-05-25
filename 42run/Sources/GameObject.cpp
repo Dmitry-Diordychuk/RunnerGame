@@ -43,7 +43,7 @@ namespace ft {
 
             if (collider())
             {
-                collider()->center().translate(dp);
+                collider()->center()->translate(dp);
             }
         }
 
