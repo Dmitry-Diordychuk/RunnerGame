@@ -27,8 +27,7 @@ namespace ft
         m_center->translate(center);
         if (Consts::IS_COLLISION_DEBUG_ON)
         {
-            m_model = Model();
-            m_model.loadBox(center, halfX, halfY, halfZ);
+            m_model->loadBox(center, halfX, halfY, halfZ);
         }
     }
 

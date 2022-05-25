@@ -36,14 +36,14 @@ namespace ft
 
         Callback callback() { return m_callback; }
 
-        Model& model() { return m_model; }
+        std::shared_ptr<Model> model() { return m_model; }
 
 
     protected:
         ColliderType m_type;
         Callback m_callback;
         std::shared_ptr<Transform> m_center = std::make_shared<Transform>();
-        Model m_model;
+        std::shared_ptr<Model> m_model = std::make_shared<Model>();
 
     };
 

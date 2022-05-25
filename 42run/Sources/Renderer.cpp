@@ -66,8 +66,8 @@ namespace ft {
 
         if (Consts::IS_COLLISION_DEBUG_ON && gameObject.collider())
         {
-            gameObject.collider()->model().bindMesh(0);
-            GLCall(glDrawElements(GL_LINE_LOOP, gameObject.collider()->model().getEBO(0)->getCount(), GL_UNSIGNED_INT, nullptr));
+            gameObject.collider()->model()->bindMesh(0);
+            GLCall(glDrawElements(GL_LINE_LOOP, gameObject.collider()->model()->getEBO(0)->getCount(), GL_UNSIGNED_INT, nullptr));
         }
     }
 
