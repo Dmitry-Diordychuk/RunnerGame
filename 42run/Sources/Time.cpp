@@ -13,7 +13,7 @@ namespace ft
         delete m_instance;
         m_instance = new Time();
         m_instance->m_startTime = glfwGetTime();
-        std::cout << "Time initialized" << std::endl;
+        cout << "Time initialized" << endl;
     }
 
     float Time::time() {

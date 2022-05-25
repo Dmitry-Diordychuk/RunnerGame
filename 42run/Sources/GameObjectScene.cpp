@@ -27,10 +27,10 @@ class GameObjectScene : public Engine
         new Texture("/42run/Models/8x8x8/8x8x8.png")
     ));
 
-    void onKeyEvent(std::shared_ptr<Event>& event) override {
+    void onKeyEvent(Ref<Event>& event) override {
         if (event->getEventType() == EventType::KeyPress)
         {
-            std::shared_ptr<KeyPressEvent> keyPressEvent = std::dynamic_pointer_cast<KeyPressEvent>(event);
+            Ref<KeyPressEvent> keyPressEvent = dynamic_pointer_cast<KeyPressEvent>(event);
             if (keyPressEvent->key() == GLFW_KEY_W)
             {
                 camera->transform()->translate(glm::vec3(-camera->transform()->model()[2]) * 0.05f);

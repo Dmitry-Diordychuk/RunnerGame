@@ -12,7 +12,11 @@
 #include <algorithm>
 #include <map>
 
+#include "Pointer.hpp"
+
 namespace ft {
+    using namespace std;
+
     enum EventType {
         None,
         WindowResize,
@@ -47,12 +51,12 @@ namespace ft {
     class EventHandler
     {
     public:
-        void init(std::function<void(std::shared_ptr<Event>)> windowEventFn, std::function<void(std::shared_ptr<Event>)> keyEventFn);
+        void init(function<void(Ref<Event>)> windowEventFn, function<void(Ref<Event>)> keyEventFn);
 
-        void update(const std::shared_ptr<Event>& event);
+        void update(const Ref<Event>& event);
 
     private:
-        std::map<std::string, std::function<void(std::shared_ptr<Event>)>> m_eventCallbacks;
+        map<string, function<void(Ref<Event>)>> m_eventCallbacks;
     };
 
     class WindowResizeEvent : public Event

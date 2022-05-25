@@ -7,15 +7,15 @@
 #include <utility>
 
 namespace ft {
-    Engine::Engine(const std::string &name, int screenWidth, int screenHeight) {
+    Engine::Engine(const string &name, int screenWidth, int screenHeight) {
         eventHandler->init(
-            [this](std::shared_ptr<Event> event) { onWindowEvent(event); },
-            [this](std::shared_ptr<Event> event) { onKeyEvent(event); }
+            [this](Ref<Event> event) { onWindowEvent(event); },
+            [this](Ref<Event> event) { onKeyEvent(event); }
         );
         window->open(WindowProps(name, screenWidth, screenHeight));
         camera->init(screenWidth, screenHeight);
         renderer->init(screenWidth, screenHeight, glm::vec4(0.1f, 0.2f, 0.3f, 1.0f));
-        std::cout << "Engine started" << std::endl;
+        cout << "Engine started" << endl;
     }
 
     void ft::Engine::loop() {

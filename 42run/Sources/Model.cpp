@@ -6,14 +6,14 @@
 
 namespace ft
 {
-    void ft::Model::loadModel(const std::string& path) {
+    void ft::Model::loadModel(const string& path) {
         Assimp::Importer import;
-        std::string projectDir = PROJECT_SOURCE_DIR;
+        string projectDir = PROJECT_SOURCE_DIR;
         const aiScene *scene = import.ReadFile( projectDir + path, aiProcessPreset_TargetRealtime_Fast);
 
         if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
         {
-            std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
+            cout << "ERROR::ASSIMP::" << import.GetErrorString() << endl;
             ASSERT(false)
         }
         m_directory = path.substr(0, path.find_last_of('/'));
@@ -24,7 +24,7 @@ namespace ft
     }
 
     void Model::loadBox(glm::vec3 center, float halfX, float halfY, float halfZ) {
-        std::vector<Vertex> vertices = {
+        vector<Vertex> vertices = {
             Vertex{glm::vec3(center.x - halfX, center.y - halfY, center.z - halfZ), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
             Vertex{glm::vec3(center.x - halfX, center.y + halfY, center.z - halfZ), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
             Vertex{glm::vec3(center.x + halfX, center.y - halfY, center.z - halfZ), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
@@ -36,7 +36,7 @@ namespace ft
             Vertex{glm::vec3(center.x + halfX, center.y + halfY, center.z + halfZ), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},
         };
 
-        std::vector<GLuint> indices = {
+        vector<GLuint> indices = {
             0, 1, 1, 3, 3, 2, 2, 0,
             0, 4, 4, 5, 5, 1, 1, 4,
             4, 6, 6, 7, 7, 5, 5, 6,
@@ -44,7 +44,7 @@ namespace ft
             2, 4, 5, 3
         };
 
-        std::unique_ptr<VertexBuffer> vertexBuffer = std::make_unique<VertexBuffer>();
+        Scope<VertexBuffer> vertexBuffer = make_unique<VertexBuffer>();
         vertexBuffer->bind();
         vertexBuffer->load((GLfloat*)&vertices[0], vertices.size() * (3 + 3 + 2));
 
@@ -53,27 +53,27 @@ namespace ft
         layout.push<GLfloat>(3);
         layout.push<GLfloat>(2);
 
-        std::unique_ptr<VertexArray> vertexArray = std::make_unique<VertexArray>();
+        Scope<VertexArray> vertexArray = make_unique<VertexArray>();
         vertexArray->addBuffer(*vertexBuffer, layout);
 
 
-        std::unique_ptr<ElementBuffer> indexBuffer = std::make_unique<ElementBuffer>();
+        Scope<ElementBuffer> indexBuffer = make_unique<ElementBuffer>();
         indexBuffer->bind();
         indexBuffer->load(&indices[0], indices.size());
 
-        m_vertexBuffers.push_back(std::move(vertexBuffer));
-        m_vertexArrays.push_back(std::move(vertexArray));
-        m_indexBuffers.push_back(std::move(indexBuffer));
+        m_vertexBuffers.push_back(move(vertexBuffer));
+        m_vertexArrays.push_back(move(vertexArray));
+        m_indexBuffers.push_back(move(indexBuffer));
         m_totalMeshes++;
     }
 
     void Model::loadInGPU() {
         for (auto& it: m_meshes)
         {
-            std::vector<Vertex> vertices = it.vertices();
-            std::vector<GLuint> indices = it.indices();
+            vector<Vertex> vertices = it.vertices();
+            vector<GLuint> indices = it.indices();
 
-            std::unique_ptr<VertexBuffer> vertexBuffer = std::make_unique<VertexBuffer>();
+            Scope<VertexBuffer> vertexBuffer = make_unique<VertexBuffer>();
             vertexBuffer->bind();
             vertexBuffer->load((GLfloat*)&vertices[0], vertices.size() * (3 + 3 + 2));
 
@@ -82,17 +82,17 @@ namespace ft
             layout.push<GLfloat>(3);
             layout.push<GLfloat>(2);
 
-            std::unique_ptr<VertexArray> vertexArray = std::make_unique<VertexArray>();
+            Scope<VertexArray> vertexArray = make_unique<VertexArray>();
             vertexArray->addBuffer(*vertexBuffer, layout);
 
 
-            std::unique_ptr<ElementBuffer> indexBuffer = std::make_unique<ElementBuffer>();
+            Scope<ElementBuffer> indexBuffer = make_unique<ElementBuffer>();
             indexBuffer->bind();
             indexBuffer->load(&indices[0], indices.size());
 
-            m_vertexBuffers.push_back(std::move(vertexBuffer));
-            m_vertexArrays.push_back(std::move(vertexArray));
-            m_indexBuffers.push_back(std::move(indexBuffer));
+            m_vertexBuffers.push_back(move(vertexBuffer));
+            m_vertexArrays.push_back(move(vertexArray));
+            m_indexBuffers.push_back(move(indexBuffer));
             m_totalMeshes++;
         }
     }
@@ -113,9 +113,9 @@ namespace ft
 
     Mesh Model::processMesh(aiMesh *mesh, const aiScene *) {
         // data to fill
-        std::vector<Vertex> vertices;
-        std::vector<unsigned int> indices;
-        std::vector<ModelTexture> textures;
+        vector<Vertex> vertices;
+        vector<unsigned int> indices;
+        vector<ModelTexture> textures;
 
         // walk through each of the mesh's vertices
         for(unsigned int i = 0; i < mesh->mNumVertices; i++) {
@@ -196,31 +196,31 @@ namespace ft
 //        // normal: texture_normalN
 //
 //        // 1. diffuse maps
-//        std::vector<ModelTexture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+//        vector<ModelTexture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 //        textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 //        // 2. specular maps
-//        std::vector<ModelTexture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+//        vector<ModelTexture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 //        textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 //        // 3. normal maps
-//        std::vector<ModelTexture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+//        vector<ModelTexture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
 //        textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 //        // 4. height maps
-//        std::vector<ModelTexture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+//        vector<ModelTexture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 //        textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 //
 //        // return a mesh object created from the extracted mesh data
         return Mesh(vertices, indices, textures);
     }
 
-    std::shared_ptr<VertexBuffer> Model::getVBO(int i) {
+    Ref<VertexBuffer> Model::getVBO(int i) {
         return m_vertexBuffers[i];
     }
 
-    std::shared_ptr<ElementBuffer> Model::getEBO(int i) {
+    Ref<ElementBuffer> Model::getEBO(int i) {
         return m_indexBuffers[i];
     }
 
-    std::shared_ptr<VertexArray> Model::getVAO(int i) {
+    Ref<VertexArray> Model::getVAO(int i) {
         return m_vertexArrays[i];
     }
 
@@ -230,7 +230,7 @@ namespace ft
     }
 
 
-//    std::vector<ModelTexture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, const std::string& typeName) {
+//    vector<ModelTexture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, const string& typeName) {
 //        string filename = string(path);
 //        filename = directory + '/' + filename;
 //
@@ -262,7 +262,7 @@ namespace ft
 //        }
 //        else
 //        {
-//            std::cout << "Texture failed to load at path: " << path << std::endl;
+//            cout << "Texture failed to load at path: " << path << endl;
 //            stbi_image_free(data);
 //        }
 //

@@ -1,11 +1,6 @@
 // Local Headers
 #include "Shader.hpp"
 
-// Standard Headers
-#include <cassert>
-#include <fstream>
-#include <memory>
-
 // Define Namespace
 namespace ft
 {
@@ -27,15 +22,15 @@ namespace ft
         GLCall(glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix)));
     }
 
-    Shader & Shader::attach(std::string const & filename)
+    Shader & Shader::attach(string const & filename)
     {
         ASSERT(!filename.empty())
 
         // Load GLSL Shader Source from File
-        std::string path = PROJECT_SOURCE_DIR;
-        std::ifstream fd(path + filename);
-        auto src = std::string(std::istreambuf_iterator<char>(fd),
-                              (std::istreambuf_iterator<char>()));
+        string path = PROJECT_SOURCE_DIR;
+        ifstream fd(path + filename);
+        auto src = string(istreambuf_iterator<char>(fd),
+                              (istreambuf_iterator<char>()));
 
         // create a Shader Object
         const char * source = src.c_str();
@@ -48,9 +43,9 @@ namespace ft
         if (m_Status == false)
         {
             GLCall(glGetShaderiv(shader, GL_INFO_LOG_LENGTH, & m_Length));
-            std::unique_ptr<char[]> buffer(new char[m_Length]);
+            Scope<char[]> buffer(new char[m_Length]);
             GLCall(glGetShaderInfoLog(shader, m_Length, nullptr, buffer.get()));
-            std::cout << "Shader error: " << buffer.get() << std::endl;
+            cout << "Shader error: " << buffer.get() << endl;
             ASSERT(false)
         }
 
@@ -60,7 +55,7 @@ namespace ft
         return *this;
     }
 
-    GLuint Shader::create(std::string const & filename)
+    GLuint Shader::create(string const & filename)
     {
         auto index = filename.rfind(".");
         auto ext = filename.substr(index + 1);
@@ -90,7 +85,7 @@ namespace ft
         if(m_Status == false)
         {
             GLCall(glGetProgramiv(m_Program, GL_INFO_LOG_LENGTH, & m_Length));
-            std::unique_ptr<char[]> buffer(new char[m_Length]);
+            Scope<char[]> buffer(new char[m_Length]);
             GLCall(glGetProgramInfoLog(m_Program, m_Length, nullptr, buffer.get()));
             ASSERT(false);
         }

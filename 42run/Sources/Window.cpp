@@ -31,7 +31,7 @@ namespace ft {
 
         // Check for Valid Context
         if (m_window == nullptr) {
-            throw std::runtime_error("Failed to create OpenGL Context");
+            throw runtime_error("Failed to create OpenGL Context");
         }
 
         m_context = GraphicsContext::create(m_window);
@@ -40,27 +40,27 @@ namespace ft {
         glfwSetWindowUserPointer(m_window, &m_windowProps);
         glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow *window, int width, int height){
             auto *props = static_cast<WindowProps*>(glfwGetWindowUserPointer(window));
-            props->event = std::make_shared<WindowResizeEvent>(width, height);
+            props->event = make_shared<WindowResizeEvent>(width, height);
         });
 
         glfwSetWindowCloseCallback(m_window, [](GLFWwindow *window){
             auto *props = static_cast<WindowProps*>(glfwGetWindowUserPointer(window));
-            props->event = std::make_shared<WindowCloseEvent>();
+            props->event = make_shared<WindowCloseEvent>();
         });
 
         glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
             auto *props = static_cast<WindowProps*>(glfwGetWindowUserPointer(window));
             if (action == GLFW_PRESS)
             {
-                props->event = std::make_shared<KeyPressEvent>(key);
+                props->event = make_shared<KeyPressEvent>(key);
             }
             else if (action == GLFW_RELEASE)
             {
-                props->event = std::make_shared<KeyReleaseEvent>(key);
+                props->event = make_shared<KeyReleaseEvent>(key);
             }
             else if (action == GLFW_REPEAT)
             {
-                props->event = std::make_shared<KeyPressEvent>(key);
+                props->event = make_shared<KeyPressEvent>(key);
             }
         });
     }

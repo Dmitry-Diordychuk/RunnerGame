@@ -11,13 +11,13 @@
 #include "Mesh.hpp"
 #include "Shader.hpp"
 
-#include <memory>
+#include "Pointer.hpp"
 
 namespace ft {
     class MeshRenderer {
     private:
-        std::shared_ptr<Mesh> _mesh;
-        std::shared_ptr<Shader> _shader;
+        Ref<Mesh> _mesh;
+        Ref<Shader> _shader;
 
         // Private Member Variables
         GLuint _VAO;
@@ -37,8 +37,8 @@ namespace ft {
         // Public Member Functions
         void init();
 
-        void setMesh(const std::shared_ptr<Mesh>& mesh) { _mesh = mesh; }
-        void setShader(const std::shared_ptr<Shader>& shader) { _shader = shader; }
+        void setMesh(const Ref<Mesh>& mesh) { _mesh = mesh; }
+        void setShader(const Ref<Shader>& shader) { _shader = shader; }
 
         //void loadShaders(const std::string& shaderVert, const std::string& shaderFrag, const std::string& shaderGeom);
 

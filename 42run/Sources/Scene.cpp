@@ -4,10 +4,11 @@
 
 #include "Scene.hpp"
 
-std::shared_ptr<ft::GameObject> ft::Scene::addGameObject(GameObject* object)
-{
-    std::shared_ptr<GameObject> gameObject = std::shared_ptr<GameObject>(object);
-    std::cout << gameObject->name() << " has been added to the scene." << std::endl;
-    _objects.emplace(gameObject->name(), gameObject);
-    return _objects[gameObject->name()];
+namespace ft {
+    Ref<ft::GameObject> ft::Scene::addGameObject(GameObject *object) {
+        Ref<GameObject> gameObject = Ref<GameObject>(object);
+        cout << gameObject->name() << " has been added to the scene." << endl;
+        _objects.emplace(gameObject->name(), gameObject);
+        return _objects[gameObject->name()];
+    }
 }

@@ -8,9 +8,10 @@
 #include <GLFW/glfw3.h>
 //#include <glad/glad.h>
 
-#include <memory>
 #include <string>
 #include <utility>
+
+#include "Pointer.hpp"
 
 #include "Consts.hpp"
 #include "GraphicsContext.hpp"
@@ -19,17 +20,19 @@
 
 
 namespace ft{
+    using namespace std;
+
     struct WindowProps
     {
-        std::string title;
+        string title;
         int width, height;
-        std::shared_ptr<Event> event;
+        Ref<Event> event;
 
         explicit WindowProps(
-            std::string  title = Consts::DEFAULT_WINDOW_TITLE,
+            string title = Consts::DEFAULT_WINDOW_TITLE,
             int width = Consts::DEFAULT_WINDOW_WIDTH,
             int height = Consts::DEFAULT_WINDOW_HEIGHT)
-        : title(std::move(title)), width(width), height(height), event(nullptr)
+        : title(move(title)), width(width), height(height), event(nullptr)
         {
 
         }
@@ -38,7 +41,7 @@ namespace ft{
     class Window {
     private:
         GLFWwindow *m_window{};
-        std::unique_ptr<GraphicsContext> m_context;
+        Scope<GraphicsContext> m_context;
         WindowProps m_windowProps;
 
     public:

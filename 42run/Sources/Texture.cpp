@@ -10,7 +10,7 @@ ft::Texture::Texture()
     GLCall(glGenTextures(1, &m_textureId));
 }
 
-ft::Texture::Texture(const std::string &filepath) : m_imageBuffer(nullptr), m_width(0), m_height(0), m_bitsPerPixel(0) {
+ft::Texture::Texture(const string &filepath) : m_imageBuffer(nullptr), m_width(0), m_height(0), m_bitsPerPixel(0) {
     GLCall(glGenTextures(1, &m_textureId));
     load(filepath);
 }
@@ -19,7 +19,7 @@ ft::Texture::~Texture() {
     GLCall(glDeleteTextures(1, &m_textureId));
 }
 
-void ft::Texture::load(const std::string &filepath) {
+void ft::Texture::load(const string &filepath) {
     GLCall(glBindTexture(GL_TEXTURE_2D, m_textureId));
 
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP));
@@ -29,7 +29,7 @@ void ft::Texture::load(const std::string &filepath) {
 
     stbi_set_flip_vertically_on_load(1);
 
-    std::string path = PROJECT_SOURCE_DIR;
+    string path = PROJECT_SOURCE_DIR;
     m_imageBuffer = stbi_load((path + filepath).c_str(), &m_width, &m_height, &m_bitsPerPixel, 4);
     if (m_imageBuffer)
     {

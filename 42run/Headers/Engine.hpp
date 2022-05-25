@@ -5,7 +5,7 @@
 #ifndef ENGINE_HPP
 #define ENGINE_HPP
 
-#include <memory>
+#include "Pointer.hpp"
 
 #include "Buffer.hpp"
 #include "VertexArray.hpp"
@@ -26,37 +26,33 @@
 
 
 namespace ft {
-    template <typename T>
-    using Ref = std::shared_ptr<T>;
-
-    template <typename T>
-    using Scop = std::unique_ptr<T>;
+    using namespace std;
 
     class Engine {
     private:
-        std::string _name;
+        string _name;
 
     protected:
-        Scop<EventHandler> eventHandler = std::make_unique<EventHandler>();
-        Scop<Window> window = std::make_unique<Window>();
-        Scop<Renderer> renderer = std::unique_ptr<Renderer>();
-        Scop<Time> time = std::unique_ptr<Time>();
+        Scope<EventHandler> eventHandler = make_unique<EventHandler>();
+        Scope<Window> window = make_unique<Window>();
+        Scope<Renderer> renderer = unique_ptr<Renderer>();
+        Scope<Time> time = unique_ptr<Time>();
 
-        const Ref<Scene> scene = std::make_shared<Scene>();
-        const Ref<Camera> camera = std::make_shared<Camera>();
+        const Ref<Scene> scene = make_shared<Scene>();
+        const Ref<Camera> camera = make_shared<Camera>();
 
         virtual void start() {}
 
         virtual void update() {}
 
-        virtual void onKeyEvent(std::shared_ptr<Event>&) {}
+        virtual void onKeyEvent(Ref<Event>&) {}
 
-        virtual void onWindowEvent(std::shared_ptr<Event>&) {}
+        virtual void onWindowEvent(Ref<Event>&) {}
 
         Engine() = default;
 
     public:
-        explicit Engine(const std::string & name,
+        explicit Engine(const string & name,
                int screenWidth = Consts::DEFAULT_WINDOW_WIDTH,
                int screenHeight = Consts::DEFAULT_WINDOW_HEIGHT);
         virtual ~Engine() = default;

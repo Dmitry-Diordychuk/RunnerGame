@@ -10,24 +10,26 @@
 #include "GameObject.hpp"
 #include <iostream>
 
-#include <memory>
+#include "Pointer.hpp"
 
 namespace ft
 {
+    using namespace std;
+
     class GameObject;
 
     class Scene
     {
     private:
-        std::map<std::string, std::shared_ptr<GameObject>> _objects;
+        map<string, Ref<GameObject>> _objects;
 
     public:
         Scene() = default;
 
-        std::shared_ptr<GameObject> addGameObject(GameObject* object);
+        Ref<GameObject> addGameObject(GameObject* object);
 
-        std::map<std::string, std::shared_ptr<GameObject>>::iterator begin() { return _objects.begin(); }
-        std::map<std::string, std::shared_ptr<GameObject>>::iterator end() { return _objects.end(); }
+        map<string, Ref<GameObject>>::iterator begin() { return _objects.begin(); }
+        map<string, Ref<GameObject>>::iterator end() { return _objects.end(); }
     };
 }
 

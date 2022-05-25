@@ -15,9 +15,9 @@ class LoadModelScene : public Engine
     Model model = Model("/42run/Models/Skull/source/skull.obj");
     //Model model = Model("/42run/Models/Cubes.obj");
 
-    std::vector<std::unique_ptr<VertexBuffer>> vertexBuffers;
-    std::vector<std::unique_ptr<ElementBuffer>> indexBuffers;
-    std::vector<std::unique_ptr<VertexArray>> vertexArrays;
+    vector<Scope<VertexBuffer>> vertexBuffers;
+    vector<Scope<ElementBuffer>> indexBuffers;
+    vector<Scope<VertexArray>> vertexArrays;
 
     glm::mat4 projectionMatrix = glm::perspective(
             glm::radians(45.0f),
@@ -36,10 +36,10 @@ class LoadModelScene : public Engine
 
         for (auto& it: model)
         {
-            std::vector<Vertex> vertices = it.vertices();
-            std::vector<GLuint> indices = it.indices();
+            vector<Vertex> vertices = it.vertices();
+            vector<GLuint> indices = it.indices();
 
-            std::unique_ptr<VertexBuffer> vertexBuffer = std::make_unique<VertexBuffer>();
+            Scope<VertexBuffer> vertexBuffer = make_unique<VertexBuffer>();
             vertexBuffer->bind();
             vertexBuffer->load((GLfloat*)&vertices[0], vertices.size() * (3 + 3 + 2));
 
@@ -48,16 +48,16 @@ class LoadModelScene : public Engine
             layout.push<GLfloat>(3);
             layout.push<GLfloat>(2);
 
-            std::unique_ptr<VertexArray> vertexArray = std::make_unique<VertexArray>();
+            Scope<VertexArray> vertexArray = make_unique<VertexArray>();
             vertexArray->addBuffer(*vertexBuffer, layout);
 
-            std::unique_ptr<ElementBuffer> indexBuffer = std::make_unique<ElementBuffer>();
+            Scope<ElementBuffer> indexBuffer = make_unique<ElementBuffer>();
             indexBuffer->bind();
             indexBuffer->load(&indices[0], indices.size());
 
-            vertexBuffers.push_back(std::move(vertexBuffer));
-            vertexArrays.push_back(std::move(vertexArray));
-            indexBuffers.push_back(std::move(indexBuffer));
+            vertexBuffers.push_back(move(vertexBuffer));
+            vertexArrays.push_back(move(vertexArray));
+            indexBuffers.push_back(move(indexBuffer));
         }
 
         transform.translate(glm::vec3(0.0f, 0.0f, -3.0f));

@@ -6,16 +6,16 @@
 
 namespace ft{
 
-    std::unique_ptr<GraphicsContext> GraphicsContext::create(GLFWwindow *windowHandler) {
-        return std::make_unique<GraphicsContext>(windowHandler);
+    Scope<GraphicsContext> GraphicsContext::create(GLFWwindow *windowHandler) {
+        return make_unique<GraphicsContext>(windowHandler);
     }
 
     void GraphicsContext::init() {
         glfwMakeContextCurrent(m_windowHandler);
         if (!gladLoadGL()) {
-            throw std::runtime_error("Failed to initialize GLAD");
+            throw runtime_error("Failed to initialize GLAD");
         }
-        std::cerr << "OpenGL " << glGetString(GL_VERSION) << std::endl;
+        cerr << "OpenGL " << glGetString(GL_VERSION) << endl;
     }
 
     void GraphicsContext::swapBuffers() {

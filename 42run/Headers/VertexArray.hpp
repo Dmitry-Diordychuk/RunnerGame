@@ -13,6 +13,8 @@
 #include <algorithm>
 
 namespace ft {
+    using namespace std;
+
     struct VertexBufferElement
     {
         unsigned int type;
@@ -33,7 +35,7 @@ namespace ft {
     class VertexBufferLayout
     {
     private:
-        std::vector<VertexBufferElement> m_elements;
+        vector<VertexBufferElement> m_elements;
         unsigned int m_stride;
 
     public:
@@ -59,7 +61,7 @@ namespace ft {
             m_stride += sizeof(GLuint) * count;
         }
 
-        inline const std::vector<VertexBufferElement>& getElements() const { return m_elements; }
+        inline const vector<VertexBufferElement>& getElements() const { return m_elements; }
         inline unsigned int getStride() const { return m_stride; }
     };
 

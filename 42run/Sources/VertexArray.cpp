@@ -13,7 +13,7 @@ namespace ft{
 
         VBO.bind();
 
-        const std::vector<VertexBufferElement>& elements = layout.getElements();
+        const vector<VertexBufferElement>& elements = layout.getElements();
         const unsigned int stride = layout.getStride();
 
         unsigned int offset = 0;

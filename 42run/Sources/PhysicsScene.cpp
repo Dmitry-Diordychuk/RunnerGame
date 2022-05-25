@@ -20,14 +20,14 @@ class PhysicsScene : public Engine
     Ref<GameObject> floor = scene->addGameObject(new GameObject(
             "Floor",
             new AABBCollider(glm::vec3(0.0f, 0.0f, 0.0f), 5.0f, 1.0f, 5.0f, [](){
-                std::cout << "Hello, collider!" << std::endl;
+                cout << "Hello, collider!" << endl;
             })
     ));
 
-    void onKeyEvent(std::shared_ptr<Event>& event) override {
+    void onKeyEvent(Ref<Event>& event) override {
         if (event->getEventType() == EventType::KeyPress)
         {
-            std::shared_ptr<KeyPressEvent> keyPressEvent = std::dynamic_pointer_cast<KeyPressEvent>(event);
+            Ref<KeyPressEvent> keyPressEvent = dynamic_pointer_cast<KeyPressEvent>(event);
             if (keyPressEvent->key() == GLFW_KEY_W)
             {
                 camera->transform()->translate(glm::vec3(-camera->transform()->model()[2]) * 0.05f);

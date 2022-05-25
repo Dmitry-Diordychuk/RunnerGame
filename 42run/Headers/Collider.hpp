@@ -9,7 +9,8 @@
 #include <utility>
 #include <vector>
 #include <functional>
-#include <memory>
+
+#include "Pointer.hpp"
 
 #include "Transform.hpp"
 #include "Model.hpp"
@@ -17,7 +18,9 @@
 
 namespace ft
 {
-    using Callback = std::function<void()>;
+    using namespace std;
+
+    using Callback = function<void()>;
 
     enum ColliderType
     {
@@ -27,23 +30,23 @@ namespace ft
     class Collider
     {
     public:
-        Collider(ColliderType type, Callback triggerCallback) : m_type(type), m_callback(std::move(triggerCallback)) {}
+        Collider(ColliderType type, Callback triggerCallback) : m_type(type), m_callback(move(triggerCallback)) {}
         virtual ~Collider() = default;
 
-        bool isCollide(const std::shared_ptr<Collider>& other);
+        bool isCollide(const Ref<Collider>& other);
 
-        std::shared_ptr<Transform> center() { return m_center; }
+        Ref<Transform> center() { return m_center; }
 
         Callback callback() { return m_callback; }
 
-        std::shared_ptr<Model> model() { return m_model; }
+        Ref<Model> model() { return m_model; }
 
 
     protected:
         ColliderType m_type;
         Callback m_callback;
-        std::shared_ptr<Transform> m_center = std::make_shared<Transform>();
-        std::shared_ptr<Model> m_model = std::make_shared<Model>();
+        Ref<Transform> m_center = make_shared<Transform>();
+        Ref<Model> m_model = make_shared<Model>();
 
     };
 
@@ -52,7 +55,7 @@ namespace ft
     public:
         AABBCollider(const glm::vec3& center, float halfX, float halfY, float halfZ, Callback triggerCallback = nullptr);
 
-        bool testAABBAABB(const std::shared_ptr<AABBCollider>& other) const;
+        bool testAABBAABB(const Ref<AABBCollider>& other) const;
 
     private:
         float m_halfX;

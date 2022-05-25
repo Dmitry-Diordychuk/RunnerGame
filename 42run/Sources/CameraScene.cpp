@@ -15,9 +15,9 @@ class CameraScene : public Engine
     Model model = Model("/42run/Models/Skull/source/skull.obj");
     //Model model = Model("/42run/Models/Cubes.obj");
 
-    std::vector<std::unique_ptr<VertexBuffer>> vertexBuffers;
-    std::vector<std::unique_ptr<ElementBuffer>> indexBuffers;
-    std::vector<std::unique_ptr<VertexArray>> vertexArrays;
+    vector<Scope<VertexBuffer>> vertexBuffers;
+    vector<Scope<ElementBuffer>> indexBuffers;
+    vector<Scope<VertexArray>> vertexArrays;
 
     glm::mat4 projectionMatrix = glm::perspective(
             glm::radians(45.0f),
@@ -27,23 +27,23 @@ class CameraScene : public Engine
 
     Transform transform;
 
-    void onWindowEvent(std::shared_ptr<Event>& event) override {
+    void onWindowEvent(Ref<Event>& event) override {
         if (event->getEventType() == EventType::WindowResize)
         {
-            std::shared_ptr<WindowResizeEvent> windowResizeEvent = std::dynamic_pointer_cast<WindowResizeEvent>(event);
-            std::cout << "Window resized width: " << windowResizeEvent->width() << " height: " << windowResizeEvent->height() << std::endl;
+            Ref<WindowResizeEvent> windowResizeEvent = dynamic_pointer_cast<WindowResizeEvent>(event);
+            cout << "Window resized width: " << windowResizeEvent->width() << " height: " << windowResizeEvent->height() << endl;
         }
         else if (event->getEventType() == EventType::WindowClose)
         {
-            std::cout << "Window closed" << std::endl;
+            cout << "Window closed" << endl;
         }
     }
 
-    void onKeyEvent(std::shared_ptr<Event>& event) override {
+    void onKeyEvent(Ref<Event>& event) override {
         if (event->getEventType() == EventType::KeyPress)
         {
-            std::shared_ptr<KeyPressEvent> keyPressEvent = std::dynamic_pointer_cast<KeyPressEvent>(event);
-            std::cout << "Key " << keyPressEvent->key() << " pressed" << std::endl;
+            Ref<KeyPressEvent> keyPressEvent = dynamic_pointer_cast<KeyPressEvent>(event);
+            cout << "Key " << keyPressEvent->key() << " pressed" << endl;
 
             if (keyPressEvent->key() == GLFW_KEY_W)
             {
@@ -72,8 +72,8 @@ class CameraScene : public Engine
         }
         else if (event->getEventType() == EventType::KeyRelease)
         {
-            std::shared_ptr<KeyReleaseEvent> keyReleaseEvent = std::dynamic_pointer_cast<KeyReleaseEvent>(event);
-            std::cout << "Key " << keyReleaseEvent->key() << " released" << std::endl;
+            Ref<KeyReleaseEvent> keyReleaseEvent = dynamic_pointer_cast<KeyReleaseEvent>(event);
+            cout << "Key " << keyReleaseEvent->key() << " released" << endl;
         }
     }
 
@@ -86,10 +86,10 @@ class CameraScene : public Engine
 
         for (auto& it: model)
         {
-            std::vector<Vertex> vertices = it.vertices();
-            std::vector<GLuint> indices = it.indices();
+            vector<Vertex> vertices = it.vertices();
+            vector<GLuint> indices = it.indices();
 
-            std::unique_ptr<VertexBuffer> vertexBuffer = std::make_unique<VertexBuffer>();
+            Scope<VertexBuffer> vertexBuffer = make_unique<VertexBuffer>();
             vertexBuffer->bind();
             vertexBuffer->load((GLfloat*)&vertices[0], vertices.size() * (3 + 3 + 2));
 
@@ -98,16 +98,16 @@ class CameraScene : public Engine
             layout.push<GLfloat>(3);
             layout.push<GLfloat>(2);
 
-            std::unique_ptr<VertexArray> vertexArray = std::make_unique<VertexArray>();
+            Scope<VertexArray> vertexArray = make_unique<VertexArray>();
             vertexArray->addBuffer(*vertexBuffer, layout);
 
-            std::unique_ptr<ElementBuffer> indexBuffer = std::make_unique<ElementBuffer>();
+            Scope<ElementBuffer> indexBuffer = make_unique<ElementBuffer>();
             indexBuffer->bind();
             indexBuffer->load(&indices[0], indices.size());
 
-            vertexBuffers.push_back(std::move(vertexBuffer));
-            vertexArrays.push_back(std::move(vertexArray));
-            indexBuffers.push_back(std::move(indexBuffer));
+            vertexBuffers.push_back(move(vertexBuffer));
+            vertexArrays.push_back(move(vertexArray));
+            indexBuffers.push_back(move(indexBuffer));
         }
 
         transform.translate(glm::vec3(0.0f, 0.0f, -3.0f));

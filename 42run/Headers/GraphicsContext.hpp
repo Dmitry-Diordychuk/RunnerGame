@@ -8,10 +8,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <memory>
 #include <cassert>
 #include <stdexcept>
 #include <iostream>
+
+#include "Pointer.hpp"
 
 namespace ft {
     class GraphicsContext {
@@ -21,7 +22,7 @@ namespace ft {
     public:
         explicit GraphicsContext(GLFWwindow *windowHandler) : m_windowHandler(windowHandler) {}
 
-        static std::unique_ptr<GraphicsContext> create(GLFWwindow *windowHandler);
+        static Scope<GraphicsContext> create(GLFWwindow *windowHandler);
         void init();
         void swapBuffers();
 

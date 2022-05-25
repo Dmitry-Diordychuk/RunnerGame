@@ -14,6 +14,8 @@
 
 
 namespace ft {
+    using namespace std;
+
     class Texture {
     private:
         unsigned int m_textureId;
@@ -23,17 +25,17 @@ namespace ft {
 
     public:
         Texture();
-        explicit Texture(const std::string& filepath);
+        explicit Texture(const string& filepath);
         ~Texture();
 
-        void load(const std::string& filepath);
+        void load(const string& filepath);
         void bind(unsigned int slot);
         void unbind();
     };
 
     struct ModelTexture {
         GLuint      id;
-        std::string type;
+        string type;
     };
 }
 

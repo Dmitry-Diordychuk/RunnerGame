@@ -7,13 +7,13 @@
 #include <utility>
 
 namespace ft {
-    void EventHandler::init(std::function<void(std::shared_ptr<Event>)> windowEventFn, std::function<void(std::shared_ptr<Event>)> keyEventFn)
+    void EventHandler::init(function<void(Ref<Event>)> windowEventFn, function<void(Ref<Event>)> keyEventFn)
     {
-        m_eventCallbacks["WindowEventCallback"] = std::move(windowEventFn);
-        m_eventCallbacks["KeyEventCallback"] = std::move(keyEventFn);
+        m_eventCallbacks["WindowEventCallback"] = move(windowEventFn);
+        m_eventCallbacks["KeyEventCallback"] = move(keyEventFn);
     }
 
-    void EventHandler::update(const std::shared_ptr<Event>& event) {
+    void EventHandler::update(const Ref<Event>& event) {
         if (event != nullptr && !event->isHandled()) {
             if (event->getEventCategory() == EventCategory::WindowEvent) {
                 m_eventCallbacks["WindowEventCallback"](event);

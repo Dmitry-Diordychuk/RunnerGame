@@ -10,6 +10,8 @@
 #include "glad/glad.h"
 
 namespace ft {
+    using namespace std;
+
 #define ASSERT(x) if (!(x)) __debugbreak();
 #define GLCall(x) GLClearError();\
 	x;\
