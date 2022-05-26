@@ -26,11 +26,13 @@ namespace ft {
                 glm::abs(max.z - min.z) / 2,
                 nullptr
             );
+            m_transform->addChild(m_collider->center());
         }
     }
 
     GameObject::GameObject(string name, Collider* collider) : m_name(move(name)) {
         m_collider = Ref<Collider>(collider);
+        m_transform->addChild(m_collider->center());
     }
 
     void GameObject::updatePhysics(float deltaTime, const Ref<Scene>& scene) const {
@@ -40,11 +42,6 @@ namespace ft {
 
             glm::vec3 dp = rigidBody()->velocity() * deltaTime;
             transform()->translate(dp);
-
-            if (collider())
-            {
-                collider()->center()->translate(dp);
-            }
         }
 
         for (auto& other : *scene)
