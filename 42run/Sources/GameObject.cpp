@@ -12,10 +12,15 @@ namespace ft {
         m_texture = Ref<Texture>(texture);
     }
 
-    GameObject::GameObject(string name, Model* model, Texture* texture, ColliderType type)
+    GameObject::GameObject(string name, Model* model, Texture* texture, Collider* collider)
         : GameObject(move(name), model, texture)
     {
-        if (type == ColliderType::AABB)
+        if (collider->isInitialized()) {
+            m_collider = Ref<Collider>(collider);
+            return;
+        }
+
+        if (collider->type() == ColliderType::AABB)
         {
             glm::vec3 min = model->getMin();
             glm::vec3 max = model->getMax();
@@ -24,6 +29,7 @@ namespace ft {
                 glm::abs(max.x - min.x) / 2,
                 glm::abs(max.y - min.y) / 2,
                 glm::abs(max.z - min.z) / 2,
+                collider->isStatic(),
                 nullptr
             );
             m_transform->addChild(m_collider->center());
@@ -44,14 +50,20 @@ namespace ft {
             transform()->translate(dp);
         }
 
-        for (auto& other : *scene)
-        {
-            if (this != other.second.get())
-            {
-                if (this->collider()->isCollide(other.second->collider()))
-                {
-                    this->collider()->callback();
-                    other.second->collider()->callback();
+        if (this->collider()) {
+            for (auto &other: *scene) {
+                if (this != other.second.get()) {
+                    if (this->collider()->isCollide(other.second->collider())) {
+                        if (this->collider()->getCallback()) {
+                            this->collider()->getCallback()();
+                        }
+                        if (other.second->collider()->getCallback()) {
+                            other.second->collider()->getCallback()();
+                        }
+
+                        //rigidBody()->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
+                        //rigidBody()->setAcceleration(glm::vec3(0.0f, 0.0f, 0.0f));
+                    }
                 }
             }
         }

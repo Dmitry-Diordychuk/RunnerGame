@@ -36,7 +36,7 @@ namespace ft {
     public:
         explicit GameObject(string  name) : m_name(move(name)) {}
         GameObject(string name, Model* model, Texture* texture);
-        GameObject(string name, Model* model, Texture* texture, ColliderType type);
+        GameObject(string name, Model* model, Texture* texture, Collider* collider);
         GameObject(string name, Collider* collider);
 
         string name() { return m_name; }

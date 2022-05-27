@@ -68,7 +68,7 @@ class GameObjectScene : public Engine
 
     void update() override {
         skull->transform()->rotate(glm::vec3(0.0f, 0.01f, 0.0));
-        skull2->transform()->rotate(glm::vec3(0.0f, -9.8f, 0.0));
+        skull2->transform()->rotate(glm::vec3(0.0f, -0.01f, 0.0));
     }
 };
 

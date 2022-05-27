@@ -14,12 +14,12 @@ class PhysicsScene : public Engine
             "Skull",
             new Model("/42run/Models/Skull/source/skull.obj"),
             new Texture("/42run/Models/Skull/textures/difuso_flip_oscuro.jpg"),
-            ColliderType::AABB
+            new AABBCollider(false)
     ));
 
     Ref<GameObject> floor = scene->addGameObject(new GameObject(
             "Floor",
-            new AABBCollider(glm::vec3(0.0f, 0.0f, 0.0f), 5.0f, 1.0f, 5.0f, [](){
+            new AABBCollider(glm::vec3(0.0f, 0.0f, 0.0f), 5.0f, 1.0f, 5.0f, true, [](){
                 cout << "Hello, collider!" << endl;
             })
     ));

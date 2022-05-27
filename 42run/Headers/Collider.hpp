@@ -30,30 +30,38 @@ namespace ft
     class Collider
     {
     public:
-        Collider(ColliderType type, Callback triggerCallback) : m_type(type), m_callback(move(triggerCallback)) {}
+        Collider(ColliderType type, bool isStatic, Callback triggerCallback) : m_type(type), m_isStatic(isStatic), m_callback(move(triggerCallback))  {}
         virtual ~Collider() = default;
 
         bool isCollide(const Ref<Collider>& other);
 
         Ref<Transform> center() { return m_center; }
 
-        Callback callback() { return m_callback; }
+        Callback getCallback() { return m_callback; }
 
         Ref<Model> model() { return m_model; }
 
+        bool isInitialized() const { return m_isInitialized; };
+
+        bool isStatic() const { return m_isStatic; };
+
+        ColliderType type() const { return m_type; };
 
     protected:
         ColliderType m_type;
         Callback m_callback;
         Ref<Transform> m_center = make_shared<Transform>();
         Ref<Model> m_model = make_shared<Model>();
+        bool m_isStatic;
+        bool m_isInitialized = true;
 
     };
 
     class AABBCollider : public Collider
     {
     public:
-        AABBCollider(const glm::vec3& center, float halfX, float halfY, float halfZ, Callback triggerCallback = nullptr);
+        explicit AABBCollider(bool isStatic, Callback triggerCallback = nullptr);
+        AABBCollider(const glm::vec3& center, float halfX, float halfY, float halfZ, bool isStatic, Callback triggerCallback = nullptr);
 
         bool testAABBAABB(const Ref<AABBCollider>& other) const;
 
