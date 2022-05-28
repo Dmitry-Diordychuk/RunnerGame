@@ -36,10 +36,49 @@ namespace ft
         }
     }
 
-    bool AABBCollider::testAABBAABB(const Ref<AABBCollider>& other) const {
-        if (glm::abs(this->m_center->position().x - other->m_center->position().x) > this->m_halfX + other->m_halfX) return false;
-        if (glm::abs(this->m_center->position().y - other->m_center->position().y) > this->m_halfY + other->m_halfY) return false;
-        if (glm::abs(this->m_center->position().z - other->m_center->position().z) > this->m_halfZ + other->m_halfZ) return false;
-        return true;
+    bool AABBCollider::testAABBAABB(const Ref<AABBCollider>& other) {
+        bool result = true;
+        float subX = this->m_center->position().x - other->m_center->position().x;
+        float subY = this->m_center->position().y - other->m_center->position().y;
+        float subZ = this->m_center->position().z - other->m_center->position().z;
+
+        m_correctionX = -glm::sign(subX) * (this->m_halfX + other->m_halfX - glm::abs(subX));
+        m_correctionY = -glm::sign(subY) * (this->m_halfY + other->m_halfY - glm::abs(subY));
+        m_correctionZ = -glm::sign(subZ) * (this->m_halfZ + other->m_halfZ - glm::abs(subZ));
+
+        if (glm::abs(subX) > this->m_halfX + other->m_halfX) {
+            m_correctionX = 0.0f;
+            result = false;
+        }
+        if (glm::abs(subY) > this->m_halfY + other->m_halfY) {
+            m_correctionY = 0.0f;
+            result = false;
+        }
+        if (glm::abs(subZ) > this->m_halfZ + other->m_halfZ) {
+            m_correctionZ = 0.0f;
+            result = false;
+        }
+
+        if (glm::abs(m_correctionX) < glm::abs(m_correctionY)) {
+            m_correctionY = 0.0f;
+            if (glm::abs(m_correctionX) > glm::abs(m_correctionZ)) {
+                m_correctionZ = 0.0f;
+            } else {
+                m_correctionX = 0.0f;
+            }
+        } else {
+            m_correctionX = 0.0f;
+            if (glm::abs(m_correctionY) > glm::abs(m_correctionZ)) {
+                m_correctionZ = 0.0f;
+            } else {
+                m_correctionY = 0.0f;
+            }
+        }
+
+        return result;
+    }
+
+    glm::vec3 AABBCollider::getPositionCorrection() {
+        return {-m_correctionX, -m_correctionY, -m_correctionZ};
     }
 }

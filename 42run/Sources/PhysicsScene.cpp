@@ -59,8 +59,8 @@ class PhysicsScene : public Engine
         skull->rigidBody()->setVelocity(glm::vec3(5.0f, 7.0f, 0.0f));
         skull->rigidBody()->setAcceleration(glm::vec3(0, -2.0, 0));
 
-        camera->transform()->translate(glm::vec3(17.0f, 0.0f, 60.0f));
-        floor->transform()->translate(glm::vec3(30.0f, 0.0f, 0.0f));
+        camera->transform()->translate(glm::vec3(30.0f, 0.0f, 40.0f));
+        floor->transform()->translate(glm::vec3(35.0f, 0.0f, 0.0f));
     }
 
     void update() override {

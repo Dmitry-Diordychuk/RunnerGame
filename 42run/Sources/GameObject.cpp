@@ -61,8 +61,12 @@ namespace ft {
                             other.second->collider()->getCallback()();
                         }
 
-                        //rigidBody()->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
-                        //rigidBody()->setAcceleration(glm::vec3(0.0f, 0.0f, 0.0f));
+                        if (!this->collider()->isStatic())
+                        {
+                            this->transform()->translate(this->collider()->getPositionCorrection());
+                            //rigidBody()->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
+                            //rigidBody()->setAcceleration(glm::vec3(0.0f, 0.0f, 0.0f));
+                        }
                     }
                 }
             }

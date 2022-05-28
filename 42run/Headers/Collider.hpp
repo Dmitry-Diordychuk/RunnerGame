@@ -47,6 +47,8 @@ namespace ft
 
         ColliderType type() const { return m_type; };
 
+        virtual glm::vec3 getPositionCorrection() { ASSERT(false); return {0.0f, 0.0f, 0.0f}; };
+
     protected:
         ColliderType m_type;
         Callback m_callback;
@@ -63,12 +65,18 @@ namespace ft
         explicit AABBCollider(bool isStatic, Callback triggerCallback = nullptr);
         AABBCollider(const glm::vec3& center, float halfX, float halfY, float halfZ, bool isStatic, Callback triggerCallback = nullptr);
 
-        bool testAABBAABB(const Ref<AABBCollider>& other) const;
+        bool testAABBAABB(const Ref<AABBCollider>& other);
+
+        glm::vec3 getPositionCorrection() override;
 
     private:
         float m_halfX;
         float m_halfY;
         float m_halfZ;
+
+        float m_correctionX;
+        float m_correctionY;
+        float m_correctionZ;
 
     };
 }
