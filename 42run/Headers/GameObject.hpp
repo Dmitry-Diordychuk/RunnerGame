@@ -19,6 +19,7 @@
 #include <utility>
 
 class Scene;
+class Collider;
 
 namespace ft {
     using namespace std;
@@ -35,7 +36,9 @@ namespace ft {
 
     public:
         explicit GameObject(string  name) : m_name(move(name)) {}
+        GameObject::GameObject(string name, Model *model);
         GameObject(string name, Model* model, Texture* texture);
+        GameObject(string name, Model* model, Collider* collider);
         GameObject(string name, Model* model, Texture* texture, Collider* collider);
         GameObject(string name, Collider* collider);
 

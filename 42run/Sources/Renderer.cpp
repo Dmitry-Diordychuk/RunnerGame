@@ -59,15 +59,22 @@ namespace ft {
         if (gameObject.model()) {
             for (int i = 0; i < gameObject.model()->meshCounter(); i++) {
                 gameObject.model()->bindMesh(i);
-                GLCall(glDrawElements(GL_TRIANGLES, gameObject.model()->getEBO(i)->getCount(), GL_UNSIGNED_INT,
-                                      nullptr));
+                GLCall(glDrawElements(
+                        GL_TRIANGLES,
+                        gameObject.model()->getEBO(i)->getCount(),
+                        GL_UNSIGNED_INT,
+                        nullptr));
             }
         }
 
         if (Consts::IS_COLLISION_DEBUG_ON && gameObject.collider())
         {
             gameObject.collider()->model()->bindMesh(0);
-            GLCall(glDrawElements(GL_LINE_LOOP, gameObject.collider()->model()->getEBO(0)->getCount(), GL_UNSIGNED_INT, nullptr));
+            GLCall(glDrawElements(
+                    GL_LINE_LOOP,
+                    gameObject.collider()->model()->getEBO(0)->getCount(),
+                    GL_UNSIGNED_INT,
+                    nullptr));
         }
     }
 

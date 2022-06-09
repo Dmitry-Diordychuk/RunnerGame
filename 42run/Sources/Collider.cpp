@@ -7,6 +7,8 @@
 namespace ft
 {
     bool Collider::isCollide(const Ref<Collider>& other) {
+        if (other == nullptr) return false;
+
         bool result = false;
 
         if (this->m_type == AABB && other->m_type == AABB)
@@ -21,64 +23,75 @@ namespace ft
     }
 
     AABBCollider::AABBCollider(bool isStatic, Callback triggerCallback)
-    : Collider(ColliderType::AABB, isStatic, move(triggerCallback)), m_halfX(0), m_halfY(0), m_halfZ(0)
+    : Collider(ColliderType::AABB, isStatic, move(triggerCallback)),
+        m_half(0.0f, 0.0f, 0.0f),
+        m_correction(0.0f, 0.0f, 0.0f)
     {
+        m_center = glm::vec3(0.0f, 0.0f, 0.0f);
         m_isInitialized = false;
     }
 
-    AABBCollider::AABBCollider(const glm::vec3 &center, float halfX, float halfY, float halfZ, bool isStatic, Callback triggerCallback)
-    : Collider(ColliderType::AABB, isStatic, move(triggerCallback)), m_halfX(halfX), m_halfY(halfY), m_halfZ(halfZ)
+    AABBCollider::AABBCollider(const glm::vec3 &center, const glm::vec3 &half, bool isStatic, Callback triggerCallback)
+    : Collider(ColliderType::AABB, isStatic, move(triggerCallback)),
+        m_half(half),
+        m_correction(0.0f, 0.0f, 0.0f)
     {
-        m_center->translate(center);
+        m_center = center;
+        m_center.y = m_center.y + half.y;
         if (Consts::IS_COLLISION_DEBUG_ON)
         {
-            m_model->loadBox(center, halfX, halfY, halfZ);
+            m_model->loadBox(m_center, m_half.x, m_half.y, m_half.z);
         }
     }
 
     bool AABBCollider::testAABBAABB(const Ref<AABBCollider>& other) {
-        bool result = true;
-        float subX = this->m_center->position().x - other->m_center->position().x;
-        float subY = this->m_center->position().y - other->m_center->position().y;
-        float subZ = this->m_center->position().z - other->m_center->position().z;
+        glm::mat4 thisModel = this->gameObject()->transform()->model();
+        glm::mat4 otherModel = other->gameObject()->transform()->model();
 
-        m_correctionX = -glm::sign(subX) * (this->m_halfX + other->m_halfX - glm::abs(subX));
-        m_correctionY = -glm::sign(subY) * (this->m_halfY + other->m_halfY - glm::abs(subY));
-        m_correctionZ = -glm::sign(subZ) * (this->m_halfZ + other->m_halfZ - glm::abs(subZ));
+        glm::vec3 thisPos = thisModel * glm::vec4(this->center(), 1.0f);
+        glm::vec3 otherPos = otherModel * glm::vec4(other->center(), 1.0f);
 
-        if (glm::abs(subX) > this->m_halfX + other->m_halfX) {
-            m_correctionX = 0.0f;
-            result = false;
-        }
-        if (glm::abs(subY) > this->m_halfY + other->m_halfY) {
-            m_correctionY = 0.0f;
-            result = false;
-        }
-        if (glm::abs(subZ) > this->m_halfZ + other->m_halfZ) {
-            m_correctionZ = 0.0f;
-            result = false;
-        }
+        float subX = thisPos.x - otherPos.x;
+        float subY = thisPos.y - otherPos.y;
+        float subZ = thisPos.z - otherPos.z;
 
-        if (glm::abs(m_correctionX) < glm::abs(m_correctionY)) {
-            m_correctionY = 0.0f;
-            if (glm::abs(m_correctionX) > glm::abs(m_correctionZ)) {
-                m_correctionZ = 0.0f;
-            } else {
-                m_correctionX = 0.0f;
-            }
-        } else {
-            m_correctionX = 0.0f;
-            if (glm::abs(m_correctionY) > glm::abs(m_correctionZ)) {
-                m_correctionZ = 0.0f;
-            } else {
-                m_correctionY = 0.0f;
-            }
+        glm::vec3 thisHalf = glm::vec3(this->m_half.x * thisModel[0][0], this->m_half.y * thisModel[1][1], this->m_half.z * thisModel[2][2]);
+        glm::vec3 otherHalf = glm::vec3(other->m_half.x * otherModel[0][0], other->m_half.y * otherModel[1][1], other->m_half.z * otherModel[2][2]);
+
+        float absSubX = glm::abs(subX);
+        float absSubY = glm::abs(subY);
+        float absSubZ = glm::abs(subZ);
+
+        if (absSubX > thisHalf.x + otherHalf.x) {
+            return false;
+        }
+        if (absSubY > thisHalf.y + otherHalf.y) {
+            return false;
+        }
+        if (absSubZ > thisHalf.z + otherHalf.z) {
+            return false;
         }
 
-        return result;
+        //cout << "X " << absSubX << " Y " << absSubY << " Z " << absSubZ << endl;
+        if (absSubX > absSubY && absSubX > absSubZ) {
+            m_correction.x = glm::sign(subX) * (thisHalf.x + otherHalf.x - absSubX);
+            m_correction.y = 0.0f;
+            m_correction.z = 0.0f;
+        }
+        if (absSubY > absSubX && absSubY > absSubZ) {
+            m_correction.x = 0.0f;
+            m_correction.y = glm::sign(subY) * (thisHalf.y + otherHalf.y - absSubY);
+            m_correction.z = 0.0f;
+        }
+        if (absSubZ > absSubX && absSubZ > absSubY) {
+            m_correction.x = 0.0f;
+            m_correction.y = 0.0f;
+            m_correction.z = glm::sign(subZ) * (thisHalf.z + otherHalf.z - absSubZ);
+        }
+        return true;
     }
 
-    glm::vec3 AABBCollider::getPositionCorrection() {
-        return {-m_correctionX, -m_correctionY, -m_correctionZ};
+    glm::vec3 AABBCollider::resolveContact() {
+        return m_correction;
     }
 }

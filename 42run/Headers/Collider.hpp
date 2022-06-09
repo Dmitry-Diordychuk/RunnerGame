@@ -16,8 +16,14 @@
 #include "Model.hpp"
 #include "Consts.hpp"
 
+#include "GameObject.hpp"
+
+// TODO: collision resolving bug
+
 namespace ft
 {
+    class GameObject;
+
     using namespace std;
 
     using Callback = function<void()>;
@@ -30,16 +36,21 @@ namespace ft
     class Collider
     {
     public:
-        Collider(ColliderType type, bool isStatic, Callback triggerCallback) : m_type(type), m_isStatic(isStatic), m_callback(move(triggerCallback))  {}
+        Collider(ColliderType type, bool isStatic, Callback triggerCallback)
+        : m_type(type), m_isStatic(isStatic), m_callback(move(triggerCallback))  {}
         virtual ~Collider() = default;
 
         bool isCollide(const Ref<Collider>& other);
 
-        Ref<Transform> center() { return m_center; }
+        glm::vec3 center() { return m_center; }
+        void center(glm::vec3 center) { m_center = center; }
 
         Callback getCallback() { return m_callback; }
 
         Ref<Model> model() { return m_model; }
+
+        void gameObject(Ref<GameObject> gameObject) { m_gameObject = gameObject; }
+        Ref<GameObject> gameObject() { return m_gameObject; }
 
         bool isInitialized() const { return m_isInitialized; };
 
@@ -47,13 +58,15 @@ namespace ft
 
         ColliderType type() const { return m_type; };
 
-        virtual glm::vec3 getPositionCorrection() { ASSERT(false); return {0.0f, 0.0f, 0.0f}; };
+        virtual glm::vec3 resolveContact() { ASSERT(false); return {0.0f, 0.0f, 0.0f}; };
 
     protected:
         ColliderType m_type;
         Callback m_callback;
-        Ref<Transform> m_center = make_shared<Transform>();
+        glm::vec3 m_center = glm::vec3(0.0f, 0.0f, 0.0f);
         Ref<Model> m_model = make_shared<Model>();
+        Ref<GameObject> m_gameObject = nullptr;
+
         bool m_isStatic;
         bool m_isInitialized = true;
 
@@ -63,20 +76,15 @@ namespace ft
     {
     public:
         explicit AABBCollider(bool isStatic, Callback triggerCallback = nullptr);
-        AABBCollider(const glm::vec3& center, float halfX, float halfY, float halfZ, bool isStatic, Callback triggerCallback = nullptr);
+        AABBCollider(const glm::vec3& center, const glm::vec3 &half, bool isStatic, Callback triggerCallback = nullptr);
 
         bool testAABBAABB(const Ref<AABBCollider>& other);
 
-        glm::vec3 getPositionCorrection() override;
+        glm::vec3 resolveContact() override;
 
     private:
-        float m_halfX;
-        float m_halfY;
-        float m_halfZ;
-
-        float m_correctionX;
-        float m_correctionY;
-        float m_correctionZ;
+        glm::vec3 m_half;
+        glm::vec3 m_correction;
 
     };
 }

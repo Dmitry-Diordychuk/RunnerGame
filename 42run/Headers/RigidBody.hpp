@@ -16,6 +16,7 @@ namespace ft {
         void setVelocity(const glm::vec3& velocity);
         void updateVelocity(float deltaTime);
 
+        glm::vec3 acceleration() { return m_acceleration; }
         glm::vec3 velocity() { return m_velocity; }
 
         void activatePhysics() { m_physicsOn = true; };

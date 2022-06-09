@@ -19,7 +19,7 @@ class PhysicsScene : public Engine
 
     Ref<GameObject> floor = scene->addGameObject(new GameObject(
             "Floor",
-            new AABBCollider(glm::vec3(0.0f, 0.0f, 0.0f), 5.0f, 1.0f, 5.0f, true, [](){
+            new AABBCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(5.0f, 1.0f, 5.0f), true, [](){
                 cout << "Hello, collider!" << endl;
             })
     ));
@@ -68,8 +68,8 @@ class PhysicsScene : public Engine
     }
 };
 
-int main()
-{
-    PhysicsScene physicsScene("Game Object Scene", 800, 600);
-    physicsScene.loop();
-}
+//int main()
+//{
+//    PhysicsScene physicsScene("Game Object Scene", 800, 600);
+//    physicsScene.loop();
+//}
