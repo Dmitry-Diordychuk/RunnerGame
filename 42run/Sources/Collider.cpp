@@ -36,6 +36,10 @@ namespace ft
         m_half(half),
         m_correction(0.0f, 0.0f, 0.0f)
     {
+        ASSERT(half.x > 0);
+        ASSERT(half.y > 0);
+        ASSERT(half.z > 0);
+
         m_center = center;
         m_center.y = m_center.y + half.y;
         if (Consts::IS_COLLISION_DEBUG_ON)

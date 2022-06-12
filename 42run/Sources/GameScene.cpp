@@ -36,6 +36,10 @@ class GameScene : public Engine
         }
     ));
 
+    function<void()> collisionFunction = [&](){
+        cout << time->time() << " " <<  "BOOM" << endl;
+    };
+
     vector<Ref<GameObject>> rooms = {
             scene->addGameObject(new GameObject(
                     "Empty",
@@ -45,32 +49,53 @@ class GameScene : public Engine
             scene->addGameObject(new GameObject(
                     "Column",
                     new Model("/42run/Models/Column/Column.obj"),
-                    new Texture("/42run/Models/Column/Column.png")
-            )),
-            scene->addGameObject(new GameObject(
-                    "LeftTable",
-                    new Model("/42run/Models/LeftTable/LeftTable.obj"),
-                    new Texture("/42run/Models/LeftTable/LeftTable.png")
+                    new Texture("/42run/Models/Column/Column.png"),
+                    {
+                        new AABBCollider(glm::vec3(-0.75f, -1.75f, 1.1f), glm::vec3(1.1f, 4.0f, 1.1f), true, collisionFunction),
+                    }
             )),
             scene->addGameObject(new GameObject(
                     "TwoColumns",
                     new Model("/42run/Models/TwoColumns/TwoColumns.obj"),
-                    new Texture("/42run/Models/TwoColumns/TwoColumns.png")
+                    new Texture("/42run/Models/TwoColumns/TwoColumns.png"),
+                    {
+                        new AABBCollider(glm::vec3(-4.65f, -1.75f, 1.1f), glm::vec3(1.1f, 4.0f, 1.1f), true, collisionFunction),
+                        new AABBCollider(glm::vec3(4.65f, -1.75f, 1.1f), glm::vec3(1.1f, 4.0f, 1.1f), true, collisionFunction),
+                    }
+            )),
+            scene->addGameObject(new GameObject(
+                    "LeftTable",
+                    new Model("/42run/Models/LeftTable/LeftTable.obj"),
+                    new Texture("/42run/Models/LeftTable/LeftTable.png"),
+                    {
+                        new AABBCollider(glm::vec3(-1.8f, -2.0f, 0.0f), glm::vec3(8.0f, 1.8f, 1.2f), true, collisionFunction),
+                    }
             )),
             scene->addGameObject(new GameObject(
                     "RightTable",
                     new Model("/42run/Models/RightTable/RightTable.obj"),
-                    new Texture("/42run/Models/RightTable/RightTable.png")
-            )),
-            scene->addGameObject(new GameObject(
-                    "Tunel",
-                    new Model("/42run/Models/Tunel/Tunel.obj"),
-                    new Texture("/42run/Models/Tunel/Tunel.png")
+                    new Texture("/42run/Models/RightTable/RightTable.png"),
+                    {
+                        new AABBCollider(glm::vec3(+1.8f, -2.0f, 0.0f), glm::vec3(8.0f, 1.8f, 1.2f), true, collisionFunction),
+                    }
             )),
             scene->addGameObject(new GameObject(
                     "TwoTables",
                     new Model("/42run/Models/TwoTables/TwoTables.obj"),
-                    new Texture("/42run/Models/TwoTables/TwoTables.png")
+                    new Texture("/42run/Models/TwoTables/TwoTables.png"),
+                    {
+                        new AABBCollider(glm::vec3(-5.5f, -2.0f, 0.0f), glm::vec3(4.1f, 1.8f, 1.2f), true, collisionFunction),
+                        new AABBCollider(glm::vec3(+5.5f, -2.0f, 0.0f), glm::vec3(4.1f, 1.8f, 1.2f), true, collisionFunction),
+                    }
+            )),
+            scene->addGameObject(new GameObject(
+                    "Tunel",
+                    new Model("/42run/Models/Tunel/Tunel.obj"),
+                    new Texture("/42run/Models/Tunel/Tunel.png"),
+                    {
+                        new AABBCollider(glm::vec3(-5.5f, -1.75f, 0.0f), glm::vec3(4.1f, 4.0f, 4.1f), true, collisionFunction),
+                        new AABBCollider(glm::vec3(+5.5f, -1.75f, 0.0f), glm::vec3(4.1f, 4.0f, 4.1f), true, collisionFunction),
+                    }
             )),
     };
 
