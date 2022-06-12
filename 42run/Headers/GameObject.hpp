@@ -32,22 +32,22 @@ namespace ft {
         Ref<RigidBody> m_rigidBody = make_shared<RigidBody>(); // TODO: nullptr
         Ref<Model> m_model = nullptr;
         Ref<Texture> m_texture = nullptr;
-        Ref<Collider> m_collider = nullptr;
+        vector<Ref<Collider>> m_colliders;
 
     public:
         explicit GameObject(string  name) : m_name(move(name)) {}
         GameObject::GameObject(string name, Model *model);
         GameObject(string name, Model* model, Texture* texture);
-        GameObject(string name, Model* model, Collider* collider);
-        GameObject(string name, Model* model, Texture* texture, Collider* collider);
-        GameObject(string name, Collider* collider);
+        GameObject(string name, Model* model, const vector<Collider*>& colliders);
+        GameObject(string name, Model* model, Texture* texture, const vector<Collider*>& colliders);
+        GameObject(string name, const vector<Collider*>& collider);
 
         string name() { return m_name; }
         Ref<Transform> transform() const { return m_transform; }
         Ref<Model> model() const { return m_model; }
         Ref<Texture> texture() const { return m_texture; }
         Ref<RigidBody> rigidBody() const { return m_rigidBody; }
-        Ref<Collider> collider() const { return m_collider; }
+        vector<Ref<Collider>> colliders() const { return m_colliders; }
 
         void updatePhysics(float deltaTime, const Ref<Scene>& scene) const;
     };

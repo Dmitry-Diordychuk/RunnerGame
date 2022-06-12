@@ -27,6 +27,8 @@ namespace ft {
 
         static void draw(Shader& shader, const VertexArray& vertexArray, const ElementBuffer& indexBuffer);
         static void draw(Shader& shader, const GameObject& gameObject, const Camera& camera);
+        static void drawCollider(const GameObject &gameObject, const Camera &camera);
+
         static void draw(const GameObject& gameObject, const Camera& camera);
 
 
@@ -36,7 +38,9 @@ namespace ft {
     private:
         static int m_width, m_height;
         static glm::vec4 m_backgroundColor;
+
         static Shader* m_shader;
+        static Shader* m_gizmoShader;
 
     };
 }

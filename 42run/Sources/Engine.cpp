@@ -27,12 +27,15 @@ namespace ft {
 
             update();
 
-            for (auto it : *scene) {
+            for (const auto& it : *scene) {
                 Ref<GameObject> gameObject = it.second;
 
                 gameObject->updatePhysics(time->deltaTime(), scene);
 
                 renderer->draw(*it.second, *camera);
+                if (Consts::IS_COLLISION_DEBUG_ON) {
+                    renderer->drawCollider(*it.second, *camera);
+                }
             }
 
             window->update();

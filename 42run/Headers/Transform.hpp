@@ -56,6 +56,8 @@ namespace ft {
 
         glm::mat4 model();
 
+        glm::mat4 modelWithoutRotation() const;
+
         void addChild(const Ref<Transform>&);
     };
 }

@@ -126,6 +126,20 @@ namespace ft
         return translationMatrix * m_rotationMatrix * scaleMatrix;
     }
 
+    glm::mat4 Transform::modelWithoutRotation() const {
+        glm::mat4 translationMatrix = glm::mat4(1.0f);
+        translationMatrix[3][0] = m_position.x;
+        translationMatrix[3][1] = m_position.y;
+        translationMatrix[3][2] = m_position.z;
+
+        glm::mat4 scaleMatrix = glm::mat4(1.0f);
+        scaleMatrix[0][0] = m_scale.x;
+        scaleMatrix[1][1] = m_scale.y;
+        scaleMatrix[2][2] = m_scale.z;
+
+        return translationMatrix * scaleMatrix;
+    }
+
     void Transform::addChild(const Ref<Transform>& transform) {
         m_children.push_back(transform);
     }

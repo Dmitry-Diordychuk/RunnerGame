@@ -10,7 +10,9 @@ namespace ft {
     int Renderer::m_width;
     int Renderer::m_height;
     glm::vec4 Renderer::m_backgroundColor;
-    Shader* Renderer::m_shader;
+    Shader* Renderer::m_shader; // TODO: Указатель удаляется?
+    Shader* Renderer::m_gizmoShader;
+    //Shader*
 
     void Renderer::init(int width, int height, const glm::vec4& backgroundColor) {
         ASSERT(width > 0)
@@ -28,6 +30,11 @@ namespace ft {
         m_shader->attach("/42run/Shaders/camera.vert"); // TODO: прокинуть другие шейдеры
         m_shader->attach("/42run/Shaders/illumination.frag");
         m_shader->link();
+
+        m_gizmoShader = new Shader();
+        m_gizmoShader->attach("/42run/Shaders/camera.vert");
+        m_gizmoShader->attach("/42run/Shaders/basic.frag");
+        m_gizmoShader->link();
 
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
@@ -66,15 +73,25 @@ namespace ft {
                         nullptr));
             }
         }
+    }
 
-        if (Consts::IS_COLLISION_DEBUG_ON && gameObject.collider())
+    void Renderer::drawCollider(const GameObject &gameObject, const Camera &camera) {
+        if (gameObject.colliders().size() > 0)
         {
-            gameObject.collider()->model()->bindMesh(0);
-            GLCall(glDrawElements(
-                    GL_LINE_LOOP,
-                    gameObject.collider()->model()->getEBO(0)->getCount(),
-                    GL_UNSIGNED_INT,
-                    nullptr));
+            m_gizmoShader->activate();
+
+            m_gizmoShader->bind("projection", camera.projectionMatrix());
+            m_gizmoShader->bind("view", camera.transform()->inverseModel());
+            m_gizmoShader->bind("model", gameObject.transform()->modelWithoutRotation());
+
+            for (auto &collider : gameObject.colliders()) {
+                collider->model()->bindMesh(0);
+                GLCall(glDrawElements(
+                        GL_LINE_LOOP,
+                        collider->model()->getEBO(0)->getCount(),
+                        GL_UNSIGNED_INT,
+                        nullptr));
+            }
         }
     }
 

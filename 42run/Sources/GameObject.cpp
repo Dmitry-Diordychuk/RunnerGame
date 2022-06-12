@@ -23,59 +23,67 @@ namespace ft {
         m_texture = nullptr;
     }
 
-    GameObject::GameObject(string name, Model* model, Collider* collider)
+    GameObject::GameObject(string name, Model* model, const vector<Collider*>& colliders)
     : GameObject(move(name), model)
     {
-        if (collider->isInitialized()) {
-            m_collider = Ref<Collider>(collider);
-            m_collider->gameObject(Ref<GameObject>(this));
-            return;
-        }
+        for (auto &collider : colliders) {
+            if (collider->isInitialized()) {
+                m_colliders.push_back(Ref<Collider>(collider));
+                m_colliders.back()->gameObject(Ref<GameObject>(this));
+                continue;
+            }
 
-        if (collider->type() == ColliderType::AABB)
-        {
-            glm::vec3 min = model->getMin();
-            glm::vec3 max = model->getMax();
-            glm::vec3 half = glm::vec3(glm::abs(max.x - min.x) / 2, glm::abs(max.y - min.y) / 2, glm::abs(max.z - min.z) / 2);
-            m_collider = make_shared<AABBCollider>(
-                transform()->position(),
-                half,
-                collider->isStatic(),
-                nullptr
-            );
-            m_collider->gameObject(Ref<GameObject>(this));
+            if (collider->type() == ColliderType::AABB) {
+                glm::vec3 min = model->getMin();
+                glm::vec3 max = model->getMax();
+                glm::vec3 half = glm::vec3(glm::abs(max.x - min.x) / 2, glm::abs(max.y - min.y) / 2,
+                                           glm::abs(max.z - min.z) / 2);
+                m_colliders.push_back(make_shared<AABBCollider>(
+                        transform()->position(),
+                        half,
+                        collider->isStatic(),
+                        nullptr
+                ));
+                m_colliders.back()->gameObject(Ref<GameObject>(this));
+            }
         }
     }
 
-    GameObject::GameObject(string name, Model* model, Texture* texture, Collider* collider)
+    // TODO: тоже что выше
+    // TODO: лямбда колайдера не работает
+    GameObject::GameObject(string name, Model* model, Texture* texture, const vector<Collider*>& colliders)
     : GameObject(move(name), model, texture)
     {
-        if (collider->isInitialized()) {
-            m_collider = Ref<Collider>(collider);
-            m_collider->gameObject(Ref<GameObject>(this));
-            return;
-        }
+        for (auto &collider : colliders) {
+            if (collider->isInitialized()) {
+                m_colliders.push_back(Ref<Collider>(collider));
+                m_colliders.back()->gameObject(Ref<GameObject>(this));
+                continue;
+            }
 
-        if (collider->type() == ColliderType::AABB)
-        {
-            glm::vec3 min = model->getMin();
-            glm::vec3 max = model->getMax();
-            glm::vec3 half = glm::vec3(glm::abs(max.x - min.x) / 2, glm::abs(max.y - min.y) / 2, glm::abs(max.z - min.z) / 2);
-            m_collider = make_shared<AABBCollider>(
-                transform()->position(),
-                half,
-                collider->isStatic(),
-                nullptr
-            );
-            m_collider->gameObject(Ref<GameObject>(this));
+            if (collider->type() == ColliderType::AABB) {
+                glm::vec3 min = model->getMin();
+                glm::vec3 max = model->getMax();
+                glm::vec3 half = glm::vec3(glm::abs(max.x - min.x) / 2, glm::abs(max.y - min.y) / 2,
+                                           glm::abs(max.z - min.z) / 2);
+                m_colliders.push_back(make_shared<AABBCollider>(
+                        transform()->position(),
+                        half,
+                        collider->isStatic(),
+                        nullptr
+                ));
+                m_colliders.back()->gameObject(Ref<GameObject>(this));
+            }
         }
     }
 
-    GameObject::GameObject(string name, Collider* collider)
+    GameObject::GameObject(string name, const vector<Collider*>& colliders)
     : m_name(move(name))
     {
-        m_collider = Ref<Collider>(collider);
-        m_collider->gameObject(Ref<GameObject>(this));
+        for (auto &collider : colliders) {
+            m_colliders.push_back(Ref<Collider>(collider));
+            m_colliders.back()->gameObject(Ref<GameObject>(this));
+        }
     }
 
     void GameObject::updatePhysics(float deltaTime, const Ref<Scene>& scene) const {
@@ -86,27 +94,31 @@ namespace ft {
             transform()->translate(dp);
         }
 
-        if (this->collider()) {
-            for (auto &other: *scene) {
-                if (this->m_name == other.second->m_name) {
-                    continue;
-                }
-                if (this->collider()->isStatic()) {
-                    continue;
-                }
+        for (auto &thisCollider : this->colliders()) {
+            if (thisCollider) {
+                for (auto &other: *scene) {
+                    if (this->m_name == other.second->m_name) {
+                        continue;
+                    }
+                    if (thisCollider->isStatic()) {
+                        continue;
+                    }
 
-                if (this != other.second.get()) {
-                    if (this->collider()->isCollide(other.second->collider())) {
-                        if (this->collider()->getCallback()) {
-                            this->collider()->getCallback()();
-                        }
-                        if (other.second->collider()->getCallback()) {
-                            other.second->collider()->getCallback()();
-                        }
+                    if (this != other.second.get()) {
+                        for (auto &otherCollider : other.second->colliders()) {
+                            if (thisCollider->isCollide(otherCollider)) {
+                                if (thisCollider->getCallback()) {
+                                    thisCollider->getCallback()();
+                                }
+                                if (otherCollider->getCallback()) {
+                                    otherCollider->getCallback()();
+                                }
 
-                        glm::vec3 resolvedPosition = this->collider()->resolveContact();
-                        this->transform()->translate(resolvedPosition);
-                        this->rigidBody()->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
+                                glm::vec3 resolvedPosition = thisCollider->resolveContact();
+                                this->transform()->translate(resolvedPosition);
+                                this->rigidBody()->setVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
+                            }
+                        }
                     }
                 }
             }
