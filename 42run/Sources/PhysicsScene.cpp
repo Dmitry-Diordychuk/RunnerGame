@@ -14,14 +14,21 @@ class PhysicsScene : public Engine
             "Skull",
             new Model("/42run/Models/Skull/source/skull.obj"),
             new Texture("/42run/Models/Skull/textures/difuso_flip_oscuro.jpg"),
-            new AABBCollider(false)
+            {
+                    new AABBCollider(false, false)
+            }
     ));
 
     Ref<GameObject> floor = scene->addGameObject(new GameObject(
             "Floor",
-            new AABBCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(5.0f, 1.0f, 5.0f), true, [](){
-                cout << "Hello, collider!" << endl;
-            })
+            {
+                    new AABBCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(5.0f, 1.0f, 5.0f), true, false, [](
+                        const Ref<Collider>& thisCollider,
+                        const Ref<Collider>& otherCollider
+                    ) {
+                        cout << "Hello, collider!" << endl;
+                    })
+            }
     ));
 
     void onKeyEvent(Ref<Event>& event) override {

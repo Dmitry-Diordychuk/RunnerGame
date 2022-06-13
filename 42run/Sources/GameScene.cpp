@@ -14,7 +14,7 @@ class GameScene : public Engine
         new Model("/42run/Models/Finn/Finn.obj"),
         new Texture("/42run/Models/Finn/Finn.png"),
         {
-            new AABBCollider(false, []() {
+            new AABBCollider(false, false, [](const Ref<Collider>&, const Ref<Collider>&) {
                 cout << "Player collider event!" << endl;
             })
         }
@@ -24,20 +24,23 @@ class GameScene : public Engine
     Ref<GameObject> floorCollider = scene->addGameObject(new GameObject(
         "FloorCollider",
         {
-            new AABBCollider(glm::vec3(0.0f, -31.9f, 0.0f), glm::vec3(16.0f, 16.0f, 16.0f), true,
-                 [&]() {
+            new AABBCollider(glm::vec3(0.0f, -31.9f, 0.0f), glm::vec3(16.0f, 16.0f, 16.0f), true, false,
+                [&](const Ref<Collider>&, const Ref<Collider>&) {
                      if (!isGrounded) {
                          finn->transform()->rotate(glm::vec3(-finn->transform()->angle().x, 0.0f, 0.0f));
                          finn->transform()->rotate(glm::vec3(0.0f, 0.9f, 0.0f));
                          finn->rigidBody()->setAcceleration(glm::vec3(0.0f, 0.0f, 0.0f));
                      }
                      isGrounded = true;
-                 })
+                })
         }
     ));
 
-    function<void()> collisionFunction = [&](){
-        cout << time->time() << " " <<  "BOOM" << endl;
+    function<void(Ref<Collider>, Ref<Collider>)> collisionFunction = [&](
+        const Ref<Collider>& thisCollider,
+        const Ref<Collider>& otherCollider
+    ){
+        cout << time->time() << " " << thisCollider->gameObject()->name() <<  " collide with " << otherCollider->gameObject()->name() << endl;
     };
 
     vector<Ref<GameObject>> rooms = {
@@ -51,7 +54,7 @@ class GameScene : public Engine
                     new Model("/42run/Models/Column/Column.obj"),
                     new Texture("/42run/Models/Column/Column.png"),
                     {
-                        new AABBCollider(glm::vec3(-0.75f, -1.75f, 1.1f), glm::vec3(1.1f, 4.0f, 1.1f), true, collisionFunction),
+                        new AABBCollider(glm::vec3(-0.75f, -1.75f, 1.1f), glm::vec3(1.1f, 4.0f, 1.1f), true, true, collisionFunction),
                     }
             )),
             scene->addGameObject(new GameObject(
@@ -59,8 +62,8 @@ class GameScene : public Engine
                     new Model("/42run/Models/TwoColumns/TwoColumns.obj"),
                     new Texture("/42run/Models/TwoColumns/TwoColumns.png"),
                     {
-                        new AABBCollider(glm::vec3(-4.65f, -1.75f, 1.1f), glm::vec3(1.1f, 4.0f, 1.1f), true, collisionFunction),
-                        new AABBCollider(glm::vec3(4.65f, -1.75f, 1.1f), glm::vec3(1.1f, 4.0f, 1.1f), true, collisionFunction),
+                        new AABBCollider(glm::vec3(-4.65f, -1.75f, 1.1f), glm::vec3(1.1f, 4.0f, 1.1f), true, true, collisionFunction),
+                        new AABBCollider(glm::vec3(4.65f, -1.75f, 1.1f), glm::vec3(1.1f, 4.0f, 1.1f), true, true, collisionFunction),
                     }
             )),
             scene->addGameObject(new GameObject(
@@ -68,7 +71,7 @@ class GameScene : public Engine
                     new Model("/42run/Models/LeftTable/LeftTable.obj"),
                     new Texture("/42run/Models/LeftTable/LeftTable.png"),
                     {
-                        new AABBCollider(glm::vec3(-1.8f, -2.0f, 0.0f), glm::vec3(8.0f, 1.8f, 1.2f), true, collisionFunction),
+                        new AABBCollider(glm::vec3(-1.8f, -2.0f, 0.0f), glm::vec3(8.0f, 1.8f, 1.2f), true, true, collisionFunction),
                     }
             )),
             scene->addGameObject(new GameObject(
@@ -76,7 +79,7 @@ class GameScene : public Engine
                     new Model("/42run/Models/RightTable/RightTable.obj"),
                     new Texture("/42run/Models/RightTable/RightTable.png"),
                     {
-                        new AABBCollider(glm::vec3(+1.8f, -2.0f, 0.0f), glm::vec3(8.0f, 1.8f, 1.2f), true, collisionFunction),
+                        new AABBCollider(glm::vec3(+1.8f, -2.0f, 0.0f), glm::vec3(8.0f, 1.8f, 1.2f), true, true, collisionFunction),
                     }
             )),
             scene->addGameObject(new GameObject(
@@ -84,8 +87,8 @@ class GameScene : public Engine
                     new Model("/42run/Models/TwoTables/TwoTables.obj"),
                     new Texture("/42run/Models/TwoTables/TwoTables.png"),
                     {
-                        new AABBCollider(glm::vec3(-5.5f, -2.0f, 0.0f), glm::vec3(4.1f, 1.8f, 1.2f), true, collisionFunction),
-                        new AABBCollider(glm::vec3(+5.5f, -2.0f, 0.0f), glm::vec3(4.1f, 1.8f, 1.2f), true, collisionFunction),
+                        new AABBCollider(glm::vec3(-5.5f, -2.0f, 0.0f), glm::vec3(4.1f, 1.8f, 1.2f), true, true, collisionFunction),
+                        new AABBCollider(glm::vec3(+5.5f, -2.0f, 0.0f), glm::vec3(4.1f, 1.8f, 1.2f), true, true, collisionFunction),
                     }
             )),
             scene->addGameObject(new GameObject(
@@ -93,8 +96,8 @@ class GameScene : public Engine
                     new Model("/42run/Models/Tunel/Tunel.obj"),
                     new Texture("/42run/Models/Tunel/Tunel.png"),
                     {
-                        new AABBCollider(glm::vec3(-5.5f, -1.75f, 0.0f), glm::vec3(4.1f, 4.0f, 4.1f), true, collisionFunction),
-                        new AABBCollider(glm::vec3(+5.5f, -1.75f, 0.0f), glm::vec3(4.1f, 4.0f, 4.1f), true, collisionFunction),
+                        new AABBCollider(glm::vec3(-5.5f, -1.75f, 0.0f), glm::vec3(4.1f, 4.0f, 4.1f), true, true, collisionFunction),
+                        new AABBCollider(glm::vec3(+5.5f, -1.75f, 0.0f), glm::vec3(4.1f, 4.0f, 4.1f), true, true, collisionFunction),
                     }
             )),
     };
@@ -145,7 +148,7 @@ class GameScene : public Engine
         //camera->transform()->translate(glm::vec3(0.0f, -10.0f, 30.0f));
 
         for (int i = 0; i < rooms.size(); i++) {
-            rooms[i]->transform()->translate(glm::vec3(0.0f, 2.0f, i * -7.8f));
+            rooms[i]->transform()->translate(glm::vec3(0.0f, 2.0f, (float)i * -7.8f));
         }
     }
 
@@ -157,11 +160,11 @@ class GameScene : public Engine
             finn->transform()->rotate(glm::vec3(0.0f, -glm::sin(t * 5) / 5, 0.0f));
         }
 
-        for (int i = 0; i < rooms.size(); i++) {
-            if (rooms[i]->transform()->position().z < 7.8f) {
-                rooms[i]->transform()->translate(glm::vec3(0.0f, 0.0f, 0.1f));
+        for (auto & room : rooms) {
+            if (room->transform()->position().z < 7.8f) {
+                room->transform()->translate(glm::vec3(0.0f, 0.0f, 0.1f));
             } else {
-                rooms[i]->transform()->position(glm::vec3(0.0f, 2.0f, -7.8 * (rooms.size() - 1)));
+                room->transform()->position(glm::vec3(0.0f, 2.0f, -7.8 * (rooms.size() - 1)));
             }
         }
     }

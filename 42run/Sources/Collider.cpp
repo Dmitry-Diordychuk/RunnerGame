@@ -6,6 +6,32 @@
 
 namespace ft
 {
+    AABBCollider::AABBCollider(bool isStatic, bool isTrigger, Callback triggerCallback)
+    : Collider(ColliderType::AABB, isStatic, isTrigger, move(triggerCallback)),
+        m_half(0.0f, 0.0f, 0.0f),
+        m_correction(0.0f, 0.0f, 0.0f)
+    {
+        m_center = glm::vec3(0.0f, 0.0f, 0.0f);
+        m_isInitialized = false;
+    }
+
+    AABBCollider::AABBCollider(const glm::vec3 &center, const glm::vec3 &half, bool isStatic, bool isTrigger, Callback triggerCallback)
+    : Collider(ColliderType::AABB, isStatic, isTrigger, move(triggerCallback)),
+        m_half(half),
+        m_correction(0.0f, 0.0f, 0.0f)
+    {
+        ASSERT(half.x > 0);
+        ASSERT(half.y > 0);
+        ASSERT(half.z > 0);
+
+        m_center = center;
+        m_center.y = m_center.y + half.y;
+        if (Consts::IS_COLLISION_DEBUG_ON)
+        {
+            m_model->loadBox(m_center, m_half.x, m_half.y, m_half.z);
+        }
+    }
+
     bool Collider::isCollide(const Ref<Collider>& other) {
         if (other == nullptr) return false;
 
@@ -20,32 +46,6 @@ namespace ft
         }
 
         return result;
-    }
-
-    AABBCollider::AABBCollider(bool isStatic, Callback triggerCallback)
-    : Collider(ColliderType::AABB, isStatic, move(triggerCallback)),
-        m_half(0.0f, 0.0f, 0.0f),
-        m_correction(0.0f, 0.0f, 0.0f)
-    {
-        m_center = glm::vec3(0.0f, 0.0f, 0.0f);
-        m_isInitialized = false;
-    }
-
-    AABBCollider::AABBCollider(const glm::vec3 &center, const glm::vec3 &half, bool isStatic, Callback triggerCallback)
-    : Collider(ColliderType::AABB, isStatic, move(triggerCallback)),
-        m_half(half),
-        m_correction(0.0f, 0.0f, 0.0f)
-    {
-        ASSERT(half.x > 0);
-        ASSERT(half.y > 0);
-        ASSERT(half.z > 0);
-
-        m_center = center;
-        m_center.y = m_center.y + half.y;
-        if (Consts::IS_COLLISION_DEBUG_ON)
-        {
-            m_model->loadBox(m_center, m_half.x, m_half.y, m_half.z);
-        }
     }
 
     bool AABBCollider::testAABBAABB(const Ref<AABBCollider>& other) {

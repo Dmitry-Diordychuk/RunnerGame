@@ -18,10 +18,11 @@
 
 #include <utility>
 
-class Scene;
-class Collider;
 
 namespace ft {
+    class Scene;
+    class Collider;
+
     using namespace std;
 
     class GameObject {

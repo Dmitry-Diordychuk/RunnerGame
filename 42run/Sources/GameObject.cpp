@@ -42,6 +42,7 @@ namespace ft {
                         transform()->position(),
                         half,
                         collider->isStatic(),
+                        collider->isTrigger(),
                         nullptr
                 ));
                 m_colliders.back()->gameObject(Ref<GameObject>(this));
@@ -70,6 +71,7 @@ namespace ft {
                         transform()->position(),
                         half,
                         collider->isStatic(),
+                        collider->isTrigger(),
                         nullptr
                 ));
                 m_colliders.back()->gameObject(Ref<GameObject>(this));
@@ -108,10 +110,14 @@ namespace ft {
                         for (auto &otherCollider : other.second->colliders()) {
                             if (thisCollider->isCollide(otherCollider)) {
                                 if (thisCollider->getCallback()) {
-                                    thisCollider->getCallback()();
+                                    thisCollider->getCallback()(thisCollider, otherCollider); // TODO: не работает
                                 }
                                 if (otherCollider->getCallback()) {
-                                    otherCollider->getCallback()();
+                                    otherCollider->getCallback()(thisCollider, otherCollider);
+                                }
+
+                                if (otherCollider->isTrigger()) {
+                                    continue;
                                 }
 
                                 glm::vec3 resolvedPosition = thisCollider->resolveContact();

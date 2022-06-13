@@ -26,7 +26,9 @@ namespace ft
 
     using namespace std;
 
-    using Callback = function<void()>;
+    class Collider;
+
+    using Callback = function<void(const Ref<Collider> thisCollider, const Ref<Collider> otherCollider)>;
 
     enum ColliderType
     {
@@ -36,8 +38,8 @@ namespace ft
     class Collider
     {
     public:
-        Collider(ColliderType type, bool isStatic, Callback triggerCallback)
-        : m_type(type), m_isStatic(isStatic), m_callback(move(triggerCallback))  {}
+        Collider(ColliderType type, bool isStatic, bool isTrigger, Callback triggerCallback)
+        : m_type(type), m_isStatic(isStatic), m_isTrigger(isTrigger), m_callback(move(triggerCallback))  {}
         virtual ~Collider() = default;
 
         bool isCollide(const Ref<Collider>& other);
@@ -52,13 +54,14 @@ namespace ft
         void gameObject(Ref<GameObject> gameObject) { m_gameObject = gameObject; }
         Ref<GameObject> gameObject() { return m_gameObject; }
 
-        bool isInitialized() const { return m_isInitialized; };
+        bool isInitialized() const { return m_isInitialized; }
 
-        bool isStatic() const { return m_isStatic; };
+        bool isStatic() const { return m_isStatic; }
+        bool isTrigger() const { return m_isTrigger; }
 
-        ColliderType type() const { return m_type; };
+        ColliderType type() const { return m_type; }
 
-        virtual glm::vec3 resolveContact() { ASSERT(false); return {0.0f, 0.0f, 0.0f}; };
+        virtual glm::vec3 resolveContact() { ASSERT(false); return {0.0f, 0.0f, 0.0f}; }
 
     protected:
         ColliderType m_type;
@@ -68,6 +71,7 @@ namespace ft
         Ref<GameObject> m_gameObject = nullptr;
 
         bool m_isStatic;
+        bool m_isTrigger;
         bool m_isInitialized = true;
 
     };
@@ -75,8 +79,8 @@ namespace ft
     class AABBCollider : public Collider
     {
     public:
-        explicit AABBCollider(bool isStatic, Callback triggerCallback = nullptr);
-        AABBCollider(const glm::vec3& center, const glm::vec3 &half, bool isStatic, Callback triggerCallback = nullptr);
+        explicit AABBCollider(bool isStatic, bool isTrigger, Callback triggerCallback = nullptr);
+        AABBCollider(const glm::vec3& center, const glm::vec3 &half, bool isStatic, bool isTrigger, Callback triggerCallback = nullptr);
 
         bool testAABBAABB(const Ref<AABBCollider>& other);
 
