@@ -49,8 +49,8 @@ namespace ft
     }
 
     bool AABBCollider::testAABBAABB(const Ref<AABBCollider>& other) {
-        glm::mat4 thisModel = this->gameObject()->transform()->model();
-        glm::mat4 otherModel = other->gameObject()->transform()->model();
+        glm::mat4 thisModel = this->gameObject()->transform()->modelWithoutRotation();
+        glm::mat4 otherModel = other->gameObject()->transform()->modelWithoutRotation();
 
         glm::vec3 thisPos = thisModel * glm::vec4(this->center(), 1.0f);
         glm::vec3 otherPos = otherModel * glm::vec4(other->center(), 1.0f);

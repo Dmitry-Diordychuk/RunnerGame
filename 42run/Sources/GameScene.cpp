@@ -14,9 +14,7 @@ class GameScene : public Engine
         new Model("/42run/Models/Finn/Finn.obj"),
         new Texture("/42run/Models/Finn/Finn.png"),
         {
-            new AABBCollider(false, false, [](const Ref<Collider>&, const Ref<Collider>&) {
-                cout << "Player collider event!" << endl;
-            })
+            new AABBCollider(glm::vec3(0.0f, 17.0f, 0.0f), glm::vec3(17.0f, 34.0f, 17.0f), false, false)
         }
     ));
 
