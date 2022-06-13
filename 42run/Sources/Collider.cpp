@@ -76,7 +76,6 @@ namespace ft
             return false;
         }
 
-        //cout << "X " << absSubX << " Y " << absSubY << " Z " << absSubZ << endl;
         if (absSubX > absSubY && absSubX > absSubZ) {
             m_correction.x = glm::sign(subX) * (thisHalf.x + otherHalf.x - absSubX);
             m_correction.y = 0.0f;

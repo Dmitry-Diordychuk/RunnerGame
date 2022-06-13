@@ -36,14 +36,15 @@ namespace ft {
             if (collider->type() == ColliderType::AABB) {
                 glm::vec3 min = model->getMin();
                 glm::vec3 max = model->getMax();
-                glm::vec3 half = glm::vec3(glm::abs(max.x - min.x) / 2, glm::abs(max.y - min.y) / 2,
+                glm::vec3 half = glm::vec3(glm::abs(max.x - min.x) / 2,
+                                           glm::abs(max.y - min.y) / 2,
                                            glm::abs(max.z - min.z) / 2);
                 m_colliders.push_back(make_shared<AABBCollider>(
                         transform()->position(),
                         half,
                         collider->isStatic(),
                         collider->isTrigger(),
-                        nullptr
+                        collider->getCallback()
                 ));
                 m_colliders.back()->gameObject(Ref<GameObject>(this));
             }
@@ -51,7 +52,6 @@ namespace ft {
     }
 
     // TODO: тоже что выше
-    // TODO: лямбда колайдера не работает
     GameObject::GameObject(string name, Model* model, Texture* texture, const vector<Collider*>& colliders)
     : GameObject(move(name), model, texture)
     {
@@ -65,14 +65,15 @@ namespace ft {
             if (collider->type() == ColliderType::AABB) {
                 glm::vec3 min = model->getMin();
                 glm::vec3 max = model->getMax();
-                glm::vec3 half = glm::vec3(glm::abs(max.x - min.x) / 2, glm::abs(max.y - min.y) / 2,
+                glm::vec3 half = glm::vec3(glm::abs(max.x - min.x) / 2,
+                                           glm::abs(max.y - min.y) / 2,
                                            glm::abs(max.z - min.z) / 2);
                 m_colliders.push_back(make_shared<AABBCollider>(
                         transform()->position(),
                         half,
                         collider->isStatic(),
                         collider->isTrigger(),
-                        nullptr
+                        collider->getCallback()
                 ));
                 m_colliders.back()->gameObject(Ref<GameObject>(this));
             }
@@ -110,7 +111,7 @@ namespace ft {
                         for (auto &otherCollider : other.second->colliders()) {
                             if (thisCollider->isCollide(otherCollider)) {
                                 if (thisCollider->getCallback()) {
-                                    thisCollider->getCallback()(thisCollider, otherCollider); // TODO: не работает
+                                    thisCollider->getCallback()(thisCollider, otherCollider);
                                 }
                                 if (otherCollider->getCallback()) {
                                     otherCollider->getCallback()(thisCollider, otherCollider);
