@@ -67,6 +67,51 @@ namespace ft
         m_totalMeshes++;
     }
 
+    void Model::loadGlyphQuad(glm::vec3 topLeftCorner, glm::vec2 glyphSize, glm::vec2 cellSize, glm::vec2 textureCoords) {
+        ASSERT(cellSize.x <= 1.0f)
+        ASSERT(cellSize.x >= 0.0f)
+        ASSERT(cellSize.y <= 1.0f)
+        ASSERT(cellSize.y >= 0.0f)
+        ASSERT(textureCoords.x <= 1.0f)
+        ASSERT(textureCoords.x >= 0.0f)
+        ASSERT(textureCoords.y <= 1.0f)
+        ASSERT(textureCoords.y >= 0.0f)
+
+        vector<Vertex> vertices = {
+            Vertex{topLeftCorner,                                           glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(textureCoords.x, textureCoords.y + cellSize.y)},
+            Vertex{topLeftCorner + glm::vec3(glyphSize.x, 0.0f, 0.0f),        glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(textureCoords.x + cellSize.x, textureCoords.y + cellSize.y)},
+            Vertex{topLeftCorner + glm::vec3(glyphSize.x, -glyphSize.y, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(textureCoords.x + cellSize.x, textureCoords.y)},
+            Vertex{topLeftCorner + glm::vec3(0.0f, -glyphSize.y, 0.0f),      glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(textureCoords.x, textureCoords.y)},
+        };
+
+        vector<GLuint> indices = {
+            0, 2, 1,
+            2, 0, 3
+        };
+
+        Scope<VertexBuffer> vertexBuffer = make_unique<VertexBuffer>(); // TODO: повторение кода
+        vertexBuffer->bind();
+        vertexBuffer->load((GLfloat*)&vertices[0], vertices.size() * (3 + 3 + 2));
+
+        VertexBufferLayout layout;
+        layout.push<GLfloat>(3);
+        layout.push<GLfloat>(3);
+        layout.push<GLfloat>(2);
+
+        Scope<VertexArray> vertexArray = make_unique<VertexArray>();
+        vertexArray->addBuffer(*vertexBuffer, layout);
+
+
+        Scope<ElementBuffer> indexBuffer = make_unique<ElementBuffer>();
+        indexBuffer->bind();
+        indexBuffer->load(&indices[0], indices.size());
+
+        m_vertexBuffers.push_back(move(vertexBuffer));
+        m_vertexArrays.push_back(move(vertexArray));
+        m_indexBuffers.push_back(move(indexBuffer));
+        m_totalMeshes++;
+    }
+
     void Model::loadInGPU() {
         for (auto& it: m_meshes)
         {

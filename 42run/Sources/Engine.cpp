@@ -34,9 +34,12 @@ namespace ft {
 
                 renderer->draw(*it.second, *camera);
                 if (Consts::IS_COLLISION_DEBUG_ON) {
-                    renderer->drawCollider(*it.second, *camera);
+                    renderer->drawCollider(*it.second, *camera); // Разделить рендеры
                 }
+                renderer->drawText(*it.second, window->getProps().width, window->getProps().height);
             }
+
+            //for ()
 
             window->update();
             eventHandler->update(window->getProps().event);

@@ -18,7 +18,7 @@
 #include "Buffer.hpp"
 #include "GameObject.hpp"
 #include "Camera.hpp"
-
+#include "Text.hpp"
 
 namespace ft {
     class Renderer {
@@ -28,6 +28,7 @@ namespace ft {
         static void draw(Shader& shader, const VertexArray& vertexArray, const ElementBuffer& indexBuffer);
         static void draw(Shader& shader, const GameObject& gameObject, const Camera& camera);
         static void drawCollider(const GameObject &gameObject, const Camera &camera);
+        static void drawText(const GameObject &gameObject, int screenWidth, int screenHeight);
 
         static void draw(const GameObject& gameObject, const Camera& camera);
 
@@ -41,6 +42,7 @@ namespace ft {
 
         static Shader* m_shader;
         static Shader* m_gizmoShader;
+        static Shader* m_guiShader;
 
     };
 }

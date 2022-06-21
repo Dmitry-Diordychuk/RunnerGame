@@ -15,6 +15,7 @@
 #include "RigidBody.hpp"
 #include "Collider.hpp"
 #include "Scene.hpp"
+#include "Text.hpp"
 
 #include <utility>
 
@@ -22,6 +23,7 @@
 namespace ft {
     class Scene;
     class Collider;
+    class Text;
 
     using namespace std;
 
@@ -34,6 +36,7 @@ namespace ft {
         Ref<Model> m_model = nullptr;
         Ref<Texture> m_texture = nullptr;
         vector<Ref<Collider>> m_colliders;
+        Ref<Text> m_text = nullptr;
 
     public:
         explicit GameObject(string  name) : m_name(move(name)) {}
@@ -42,6 +45,7 @@ namespace ft {
         GameObject(string name, Model* model, const vector<Collider*>& colliders);
         GameObject(string name, Model* model, Texture* texture, const vector<Collider*>& colliders);
         GameObject(string name, const vector<Collider*>& collider);
+        GameObject::GameObject(string name, Text* text);
 
         string name() { return m_name; }
         Ref<Transform> transform() const { return m_transform; }
@@ -49,6 +53,7 @@ namespace ft {
         Ref<Texture> texture() const { return m_texture; }
         Ref<RigidBody> rigidBody() const { return m_rigidBody; }
         vector<Ref<Collider>> colliders() const { return m_colliders; }
+        Ref<Text> text() const { return m_text; }
 
         void updatePhysics(float deltaTime, const Ref<Scene>& scene) const;
     };

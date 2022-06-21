@@ -9,6 +9,16 @@ using namespace ft;
 class GameScene : public Engine
 {   using Engine::Engine;
 
+    Ref<GameObject> distanceLabel = scene->addGameObject(new GameObject(
+            "DistanceLabel",
+            new Text("Distance: ", glm::vec3(0.0f, 1192.0f, 0.0f), new Font("/42run/Textures/Font/BasicFont.bmp", 32, 32))
+    ));
+
+    Ref<GameObject> distanceValue = scene->addGameObject(new GameObject(
+            "NONE",
+            new Text("Hello, world!", glm::vec3(10.0f * 32.0f, 1192.0f, 5.0f), new Font("/42run/Textures/Font/BasicFont.bmp", 32, 32))
+    ));
+
     Ref<GameObject> finn = scene->addGameObject(new GameObject(
         "Finn",
         new Model("/42run/Models/Finn/Finn.obj"),
@@ -22,7 +32,7 @@ class GameScene : public Engine
     Ref<GameObject> floorCollider = scene->addGameObject(new GameObject(
         "FloorCollider",
         {
-            new AABBCollider(glm::vec3(0.0f, -31.9f, 0.0f), glm::vec3(16.0f, 16.0f, 16.0f), true, false,
+            new AABBCollider(glm::vec3(0.0f, -31.0f, 0.0f), glm::vec3(16.0f, 16.0f, 16.0f), true, false,
                 [&](const Ref<Collider>&, const Ref<Collider>&) {
                      if (!isGrounded) {
                          finn->transform()->rotate(glm::vec3(-finn->transform()->angle().x, 0.0f, 0.0f));
@@ -138,7 +148,7 @@ class GameScene : public Engine
     void start() override {
         finn->transform()->scale(glm::vec3(0.05f, 0.05f, 0.05f));
         finn->transform()->translate(glm::vec3(0.0f, 0.1f, 0.0f));
-        finn->transform()->rotate(glm::vec3(0.0f, glm::pi<float>(), 0.0f));
+        finn->transform()->rotate(glm::vec3(0.0f, glm::pi<float>() + 0.9f, 0.0f));
 
         camera->transform()->translate(glm::vec3(0.0f, 9.0f, 9.0f));
         camera->transform()->rotate(glm::vec3(-0.5f, 0.0f, 0.0f));
@@ -149,6 +159,8 @@ class GameScene : public Engine
             rooms[i]->transform()->translate(glm::vec3(0.0f, 2.0f, (float)i * -7.8f));
         }
     }
+
+
 
     void update() override {
         if (!isGrounded) {
@@ -165,11 +177,13 @@ class GameScene : public Engine
                 room->transform()->position(glm::vec3(0.0f, 2.0f, -7.8 * (rooms.size() - 1)));
             }
         }
+
+        distanceValue->text()->update(to_string((int)time->time()));
     }
 };
 
 int main()
 {
-    GameScene physicsScene("Game Scene", 800, 600);
-    physicsScene.loop();
+    GameScene gameScene("Game Scene", 1600, 1200);
+    gameScene.loop();
 }

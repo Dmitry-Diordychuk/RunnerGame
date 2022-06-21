@@ -55,7 +55,7 @@ add_definitions(-DGLFW_INCLUDE_NONE
                 -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
                                ${PROJECT_SHADERS} ${PROJECT_CONFIGS}
-                               ${VENDORS_SOURCES} 42run/Sources/GameObjectScene.cpp 42run/Headers/RigidBody.hpp 42run/Sources/RigidBody.cpp 42run/Sources/PhysicsScene.cpp 42run/Headers/Collider.hpp 42run/Sources/Collider.cpp 42run/Headers/Pointer.hpp 42run/Sources/GameScene.cpp)
+                               ${VENDORS_SOURCES} 42run/Sources/GameObjectScene.cpp 42run/Headers/RigidBody.hpp 42run/Sources/RigidBody.cpp 42run/Sources/PhysicsScene.cpp 42run/Headers/Collider.hpp 42run/Sources/Collider.cpp 42run/Headers/Pointer.hpp 42run/Sources/GameScene.cpp 42run/Sources/FontScene.cpp 42run/Sources/Font.cpp 42run/Headers/Font.hpp 42run/Headers/Text.hpp 42run/Sources/Text.cpp)
 target_link_libraries(${PROJECT_NAME} assimp glfw
                       ${GLFW_LIBRARIES} ${GLAD_LIBRARIES})
 set_target_properties(${PROJECT_NAME} PROPERTIES

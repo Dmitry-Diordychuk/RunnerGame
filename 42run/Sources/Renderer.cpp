@@ -12,7 +12,7 @@ namespace ft {
     glm::vec4 Renderer::m_backgroundColor;
     Shader* Renderer::m_shader; // TODO: Указатель удаляется?
     Shader* Renderer::m_gizmoShader;
-    //Shader*
+    Shader* Renderer::m_guiShader;
 
     void Renderer::init(int width, int height, const glm::vec4& backgroundColor) {
         ASSERT(width > 0)
@@ -36,8 +36,15 @@ namespace ft {
         m_gizmoShader->attach("/42run/Shaders/basic.frag");
         m_gizmoShader->link();
 
+        m_guiShader = new Shader();
+        m_guiShader->attach("/42run/Shaders/gui.vert");
+        m_guiShader->attach("/42run/Shaders/gui.frag");
+        m_guiShader->link();
+
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glFrontFace(GL_CCW);
         glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
     }
@@ -75,6 +82,10 @@ namespace ft {
         }
     }
 
+    void Renderer::draw(const GameObject& gameObject, const Camera& camera) {
+        draw(*m_shader, gameObject, camera);
+    }
+
     void Renderer::drawCollider(const GameObject &gameObject, const Camera &camera) {
         if (gameObject.colliders().size() > 0)
         {
@@ -95,10 +106,27 @@ namespace ft {
         }
     }
 
-    void Renderer::draw(const GameObject& gameObject, const Camera& camera) {
-        draw(*m_shader, gameObject, camera);
-    }
+    void Renderer::drawText(const GameObject &gameObject, int screenWidth, int screenHeight) {
+        if (!gameObject.text()) {
+            return;
+        }
 
+        gameObject.text()->font()->texture()->bind(0);
+
+        m_guiShader->activate();
+
+        m_guiShader->bind("screen", glm::vec3(screenWidth, screenHeight, 0.0f));
+
+        for (auto &glyph : *gameObject.text())
+        {
+            glyph->bindMesh(0);
+            GLCall(glDrawElements(
+                    GL_TRIANGLES,
+                    glyph->getEBO(0)->getCount(),
+                    GL_UNSIGNED_INT,
+                    nullptr));
+        }
+    }
 
     void Renderer::setClearColor(const glm::vec4& color) {
         ASSERT(color.r >= 0.0f)

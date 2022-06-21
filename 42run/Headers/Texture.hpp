@@ -31,6 +31,9 @@ namespace ft {
         void load(const string& filepath);
         void bind(unsigned int slot);
         void unbind();
+
+        int width() const { return m_width; }
+        int height() const { return m_height; }
     };
 
     struct ModelTexture {

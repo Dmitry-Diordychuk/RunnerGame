@@ -89,6 +89,12 @@ namespace ft {
         }
     }
 
+    GameObject::GameObject(string name, Text* text)
+    : m_name(std::move(name))
+    {
+        m_text = Ref<Text>(text);
+    }
+
     void GameObject::updatePhysics(float deltaTime, const Ref<Scene>& scene) const {
         if (rigidBody()->isPhysicsOn()) {
             rigidBody()->updateVelocity(deltaTime);

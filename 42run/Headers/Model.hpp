@@ -24,9 +24,11 @@ namespace ft {
     public:
         Model() : m_totalMeshes(0), m_min(glm::vec3(FLT_MAX, FLT_MAX, FLT_MAX)), m_max(FLT_MIN, FLT_MIN, FLT_MIN)  {}
         explicit Model(const char *path) : Model() { loadModel(path); }
+        //Model(glm::vec3 topLeftCorner, float width, float height) : Model() { loadGlyphQuad(topLeftCorner, width, height); }
 
         void loadModel(const string& path);
         void loadBox(glm::vec3 center, float halfX, float halfY, float halfZ);
+        void loadGlyphQuad(glm::vec3 topLeftCorner, glm::vec2 glyphSize, glm::vec2 cellSize, glm::vec2 textureCoords);
 
         vector<Mesh>::iterator begin() { return m_meshes.begin(); }
         vector<Mesh>::iterator end() { return m_meshes.end(); }

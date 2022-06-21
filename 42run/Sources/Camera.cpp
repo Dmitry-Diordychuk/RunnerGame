@@ -5,7 +5,7 @@
 #include "Camera.hpp"
 
 namespace ft {
-    void Camera::init(int width, int height) {
+    void Camera::init(int width, int height) { // TODO: view?
         glViewport(0, 0, width, height);
 
         m_projectionMatrix = glm::perspective(
