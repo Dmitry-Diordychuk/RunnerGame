@@ -6,23 +6,26 @@
 #define ENGINE_HPP
 
 #include "Pointer.hpp"
-
-#include "Buffer.hpp"
-#include "VertexArray.hpp"
-#include "Texture.hpp"
-#include "Transform.hpp"
-
 #include "Window.hpp"
-#include "Renderer.hpp"
 #include "Time.hpp"
-#include "Model.hpp"
-#include "Event.hpp"
 
 #include "GameObject.hpp"
+
+//#include "Buffer.hpp"
+//#include "VertexArray.hpp"
+//#include "Texture.hpp"
+//#include "Transform.hpp"
+//
+//
+#include "Renderer.hpp"
+
+//#include "Model.hpp"
+
+
 #include "Scene.hpp"
-#include "Primitives.hpp"
-#include "Shader.hpp"
-#include "Camera.hpp"
+//#include "Primitives.hpp"
+//#include "Shader.hpp"
+//#include "Camera.hpp"
 
 
 namespace ft {

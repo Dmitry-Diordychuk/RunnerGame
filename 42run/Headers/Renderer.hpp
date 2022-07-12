@@ -6,19 +6,20 @@
 #define RENDERER_HPP
 
 // Local Headers
-#include "glitter.hpp"
+#include <glad/glad.h>
 
-// System Headers
-#include <iostream>
-
-#include <memory>
-
+//// System Headers
+//#include <iostream>
+//
+//#include <memory>
+//
 #include "Shader.hpp"
 #include "VertexArray.hpp"
 #include "Buffer.hpp"
 #include "GameObject.hpp"
 #include "Camera.hpp"
-#include "Text.hpp"
+//#include "Text.hpp"
+//#include "Consts.hpp"
 
 namespace ft {
     class Renderer {

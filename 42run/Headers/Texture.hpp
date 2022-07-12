@@ -6,12 +6,12 @@
 #define TEXTURE_HPP
 
 #include "glad/glad.h"
+#include "GlError.hpp"
+
+//#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 #include <string>
-
-#include "GlError.hpp"
-
 
 namespace ft {
     using namespace std;

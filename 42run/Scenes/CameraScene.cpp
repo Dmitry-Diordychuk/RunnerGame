@@ -132,8 +132,8 @@ class CameraScene : public Engine
     }
 };
 
-//int main()
-//{
-//    CameraScene cameraScene("Camera Scene", 800, 600);
-//    cameraScene.loop();
-//}
+int main()
+{
+    CameraScene cameraScene("Camera Scene", 800, 600);
+    cameraScene.loop();
+}

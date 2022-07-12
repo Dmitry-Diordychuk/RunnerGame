@@ -12,7 +12,7 @@ namespace ft {
     {
         using namespace std;
 
-        const bool IS_COLLISION_DEBUG_ON = true;
+        const bool IS_COLLISION_DEBUG_ON = false;
 
         const int DEFAULT_WINDOW_WIDTH = 800;
         const int DEFAULT_WINDOW_HEIGHT = 600;

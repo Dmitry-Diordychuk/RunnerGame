@@ -1,12 +1,11 @@
 #pragma once
 
-#include "glad/glad.h"
+#include "Texture.hpp"
+#include "Vertex.hpp"
 
 #include <utility>
 #include <vector>
 
-#include "Vertex.hpp"
-#include "Texture.hpp"
 
 
 namespace ft {

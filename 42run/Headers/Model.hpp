@@ -5,13 +5,16 @@
 #ifndef MODEL_HPP
 #define MODEL_HPP
 
+
+
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
 
+#include "Mesh.hpp"
+
 #include "Pointer.hpp"
 
-#include "Mesh.hpp"
 #include "Buffer.hpp"
 #include "VertexArray.hpp"
 

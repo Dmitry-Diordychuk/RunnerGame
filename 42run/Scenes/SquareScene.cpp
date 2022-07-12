@@ -47,8 +47,8 @@ class Square : public Engine
     }
 };
 
-//int main()
-//{
-//    Square square("Square", 800, 600);
-//    square.loop();
-//}
+int main()
+{
+    Square square("Square", 800, 600);
+    square.loop();
+}

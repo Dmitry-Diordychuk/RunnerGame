@@ -5,7 +5,7 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 
-#include "glitter.hpp"
+#include <glad/glad.h>
 #include "Transform.hpp"
 
 #include "Pointer.hpp"

@@ -4,7 +4,6 @@
 
 #include "Time.hpp"
 
-
 namespace ft
 {
     Time* Time::m_instance = nullptr;

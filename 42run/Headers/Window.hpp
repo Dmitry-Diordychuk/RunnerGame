@@ -5,19 +5,10 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-#include <GLFW/glfw3.h>
-//#include <glad/glad.h>
-
-#include <string>
-#include <utility>
-
-#include "Pointer.hpp"
-
-#include "Consts.hpp"
 #include "GraphicsContext.hpp"
 #include "GlError.hpp"
+#include "Consts.hpp"
 #include "Event.hpp"
-
 
 namespace ft{
     using namespace std;
@@ -32,7 +23,7 @@ namespace ft{
             string title = Consts::DEFAULT_WINDOW_TITLE,
             int width = Consts::DEFAULT_WINDOW_WIDTH,
             int height = Consts::DEFAULT_WINDOW_HEIGHT)
-        : title(move(title)), width(width), height(height), event(nullptr)
+        : title(move(title)), width(width), height(height)//, event(nullptr)
         {
 
         }

@@ -4,8 +4,6 @@
 
 #include "GameObject.hpp"
 
-#include <utility>
-
 // TODO: unique name generator. Map pick wrong object if name not unique.
 
 namespace ft {

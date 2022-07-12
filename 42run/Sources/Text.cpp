@@ -4,8 +4,6 @@
 
 #include "Text.hpp"
 
-#include <utility>
-
 namespace ft {
     Text::Text(const string& text, glm::vec3 pos, Font* font) {
         m_str = text;

@@ -1,34 +1,32 @@
 //
-// Created by ebona on 13.05.2022.
+// Created by ebona on 14.06.2022.
 //
 
+//
+// Created by ebona on 29.05.2022.
+//
 
 #include "Engine.hpp"
 
 using namespace ft;
 
-class PhysicsScene : public Engine
+class FontScene : public Engine
 {   using Engine::Engine;
 
-    Ref<GameObject> skull = scene->addGameObject(new GameObject(
-            "Skull",
-            new Model("/42run/Models/Skull/source/skull.obj"),
-            new Texture("/42run/Models/Skull/textures/difuso_flip_oscuro.jpg"),
-            {
-                    new AABBCollider(false, false)
-            }
+    Ref<GameObject> room = scene->addGameObject(new GameObject(
+        "Room",
+        new Model("/42run/Models/8x8x8/8x8x8.obj"),
+        new Texture("/42run/Models/8x8x8/8x8x8.png")
     ));
 
-    Ref<GameObject> floor = scene->addGameObject(new GameObject(
-            "Floor",
-            {
-                    new AABBCollider(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(5.0f, 1.0f, 5.0f), true, false, [](
-                        const Ref<Collider>& thisCollider,
-                        const Ref<Collider>& otherCollider
-                    ) {
-                        cout << "Hello, collider!" << endl;
-                    })
-            }
+    Ref<GameObject> timeLabel = scene->addGameObject(new GameObject(
+            "TimeLabel",
+            new Text("Time: ", glm::vec3(0.0f, 32.0f, 0.0f), new Font("/42run/Textures/Font/BasicFont.bmp", 32, 32))
+    ));
+
+    Ref<GameObject> timeValue = scene->addGameObject(new GameObject(
+        "Time",
+        new Text("Hello, world!", glm::vec3(160.0f, 32.0f, 0.0f), new Font("/42run/Textures/Font/BasicFont.bmp", 32, 32))
     ));
 
     void onKeyEvent(Ref<Event>& event) override {
@@ -63,20 +61,16 @@ class PhysicsScene : public Engine
     }
 
     void start() override {
-        skull->rigidBody()->setVelocity(glm::vec3(5.0f, 7.0f, 0.0f));
-        skull->rigidBody()->setAcceleration(glm::vec3(0, -2.0, 0));
 
-        camera->transform()->translate(glm::vec3(30.0f, 0.0f, 40.0f));
-        floor->transform()->translate(glm::vec3(35.0f, 0.0f, 0.0f));
     }
 
     void update() override {
-
+        timeValue->text()->update(to_string((int)time->time()));
     }
 };
 
-//int main()
-//{
-//    PhysicsScene physicsScene("Game Object Scene", 800, 600);
-//    physicsScene.loop();
-//}
+int main()
+{
+    FontScene fontScene("Font Scene", 800, 600);
+    fontScene.loop();
+}

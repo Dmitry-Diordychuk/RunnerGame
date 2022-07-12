@@ -23,6 +23,8 @@ namespace ft {
         void createGlyphs();
         void removeGlyphs();
 
+        void position(glm::vec3 pos) { m_pos = pos; }
+
     private:
         Ref<Font> m_font;
         vector<Ref<Model>> m_glyphs;

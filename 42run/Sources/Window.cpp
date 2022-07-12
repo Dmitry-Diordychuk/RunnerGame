@@ -4,7 +4,6 @@
 
 #include "Window.hpp"
 
-
 namespace ft {
     void Window::open(const WindowProps &props) {
         ASSERT(props.width > 0);
@@ -66,15 +65,15 @@ namespace ft {
     }
 
     void Window::close() {
-        glfwTerminate();
+       glfwTerminate();
     }
 
     void Window::update() {
-        m_context->swapBuffers();
+       m_context->swapBuffers();
         glfwPollEvents();
     }
 
     bool Window::isOpen() {
-        return glfwWindowShouldClose(m_window) == false;
+       return glfwWindowShouldClose(m_window) == false;
     }
 }

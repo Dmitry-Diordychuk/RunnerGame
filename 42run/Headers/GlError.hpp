@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-#include "glad/glad.h"
+#include <glad/glad.h>
 
 namespace ft {
     using namespace std;

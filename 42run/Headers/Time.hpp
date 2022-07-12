@@ -5,12 +5,10 @@
 #ifndef TIME_HPP
 #define TIME_HPP
 
+#include "GlError.hpp"
 #include <GLFW/glfw3.h>
 
 #include <iostream>
-
-#include "GlError.hpp"
-
 
 namespace ft {
     class Time {

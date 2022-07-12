@@ -2,8 +2,8 @@
 // Created by Diordychuk Dmitry on 27.04.2022.
 //
 
-#ifndef GLITTER_PRIMITIVES_HPP
-#define GLITTER_PRIMITIVES_HPP
+#ifndef PRIMITIVES_HPP
+#define PRIMITIVES_HPP
 
 #include "Mesh.hpp"
 
@@ -59,4 +59,4 @@ namespace ft
     };
 }
 
-#endif //GLITTER_PRIMITIVES_HPP
+#endif //PRIMITIVES_HPP

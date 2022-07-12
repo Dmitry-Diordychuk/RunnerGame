@@ -3,8 +3,6 @@
 //
 
 #include "Renderer.hpp"
-#include "Camera.hpp"
-#include "Consts.hpp"
 
 namespace ft {
     int Renderer::m_width;

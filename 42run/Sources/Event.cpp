@@ -4,8 +4,6 @@
 
 #include "Event.hpp"
 
-#include <utility>
-
 namespace ft {
     void EventHandler::init(function<void(Ref<Event>)> windowEventFn, function<void(Ref<Event>)> keyEventFn)
     {

@@ -2,6 +2,7 @@
 
 // System Headers
 #include <glad/glad.h>
+#include "GlError.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -11,8 +12,6 @@
 
 // Standard Headers
 #include <string>
-
-#include "GlError.hpp"
 
 #include "Pointer.hpp"
 

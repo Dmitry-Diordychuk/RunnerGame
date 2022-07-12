@@ -115,8 +115,8 @@ class BoxTransformScene : public Engine
     }
 };
 
-//int main()
-//{
-//    BoxTransformScene box("Box Transform Scene", 800, 600);
-//    box.loop();
-//}
+int main()
+{
+    BoxTransformScene box("Box Transform Scene", 800, 600);
+    box.loop();
+}

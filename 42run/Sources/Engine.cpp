@@ -4,8 +4,6 @@
 
 #include "Engine.hpp"
 
-#include <utility>
-
 namespace ft {
     Engine::Engine(const string &name, int screenWidth, int screenHeight) {
         eventHandler->init(
@@ -38,8 +36,6 @@ namespace ft {
                 }
                 renderer->drawText(*it.second, window->getProps().width, window->getProps().height);
             }
-
-            //for ()
 
             window->update();
             eventHandler->update(window->getProps().event);

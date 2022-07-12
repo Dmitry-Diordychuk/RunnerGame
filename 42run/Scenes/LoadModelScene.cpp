@@ -1,5 +1,5 @@
 //
-// Created by ebona on 08.05.2022.
+// Created by ebona on 05.05.2022.
 //
 
 #include "Engine.hpp"
@@ -7,7 +7,7 @@
 
 using namespace ft;
 
-class SimpleIlluminationScene : public Engine
+class LoadModelScene : public Engine
 {   using Engine::Engine;
 
     Shader shader;
@@ -28,8 +28,8 @@ class SimpleIlluminationScene : public Engine
     Transform transform;
 
     void start() override {
-        shader.attach("/42run/Shaders/illumination.vert");
-        shader.attach("/42run/Shaders/illumination.frag");
+        shader.attach("/42run/Shaders/transform.vert");
+        shader.attach("/42run/Shaders/texture.frag");
         shader.link();
 
         texture.load("/42run/Models/Skull/textures/difuso_flip_oscuro.jpg");
@@ -68,10 +68,7 @@ class SimpleIlluminationScene : public Engine
 
         shader.activate();
         shader.bind("projection", projectionMatrix);
-        shader.bind("model", transform.model());
-        shader.bind("ambientLightingColor", glm::vec3(0.5f, 0.5f, 0.5f));
-        shader.bind("diffuseLightingColor", glm::vec3(1.0f, 1.0f, 1.0f));
-        shader.bind("lightPos", glm::vec3(3.0f, 2.0f, 0.0f));
+        shader.bind("transform", transform.model());
 
         texture.bind(0);
 
@@ -80,9 +77,9 @@ class SimpleIlluminationScene : public Engine
         }
     }
 };
-//
-//int main()
-//{
-//    SimpleIlluminationScene simpleIlluminationScene("Simple Illumination Scene", 1000, 1000);
-//    simpleIlluminationScene.loop();
-//}
+
+int main()
+{
+    LoadModelScene loadModelScene("Load Model Scene", 800, 600);
+    loadModelScene.loop();
+}

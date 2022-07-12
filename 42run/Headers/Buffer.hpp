@@ -5,8 +5,7 @@
 #ifndef BUFFER_HPP
 #define BUFFER_HPP
 
-#include "glad/glad.h"
-
+#include <glad/glad.h>
 #include "GlError.hpp"
 
 namespace ft {
