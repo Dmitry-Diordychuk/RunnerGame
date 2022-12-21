@@ -1,0 +1,16 @@
+[submodule "42run/Vendor/assimp"]
+	path = 42run/Vendor/assimp
+	url = https://github.com/assimp/assimp.git
+[submodule "42run/Vendor/glad"]
+	path = 42run/Vendor/glad
+	url = https://github.com/Dav1dde/glad.git
+	branch = c
+[submodule "42run/Vendor/glfw"]
+	path = 42run/Vendor/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "42run/Vendor/glm"]
+	path = 42run/Vendor/glm
+	url = https://github.com/g-truc/glm.git
+[submodule "42run/Vendor/stb"]
+	path = 42run/Vendor/stb
+	url = https://github.com/nothings/stb.git
